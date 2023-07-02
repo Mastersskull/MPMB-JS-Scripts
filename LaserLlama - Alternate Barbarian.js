@@ -62,7 +62,7 @@ ClassList["Barbarian(LaserLlama)"] = {
 			name : "Danger Sense",
 			source : [["GMB:LL", 0]],
 			minlevel : 2,
-			description : desc(["I have advantage on initiative rolls.\n", 
+			description : desc(["I have advantage on initiative rolls.", 
 								"If I am surprised when rolling initiative, I can act as normal if I Rage during my first turn."])
 		},
 		
