@@ -108,10 +108,10 @@ ClassList["Barbarian(LaserLlama)"] = {
 		},
 		
 		"subclassfeature3" : {
-				name : "Primal Path",
-				source : [["GMB:LL", 0]],
-				minlevel : 3,
-				description : desc(['Choose a Primal Path that shapes the nature of your rage and put it in the "Class" field '])
-			}
+			name : "Primal Path",
+			source : [["GMB:LL", 0]],
+			minlevel : 3,
+			description : desc(['Choose a Primal Path that shapes the nature of your rage and put it in the "Class" field '])
+		}
 	}
 };
