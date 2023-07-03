@@ -70,6 +70,8 @@ ClassList["Barbarian(LaserLlama)"] = {
 			name : "Savage Exploits",
 			minlevel : 2,
 			source : [["GMB:LL", 0]],
+			description : desc(["\n", 
+								"Use the \"Choose Feature\" button above to choose Savage Exploits"]),
 			abilitySave : 1,
 			usages : [, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5],
 			additional : [, "d4", "d4", "d4", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10"],
