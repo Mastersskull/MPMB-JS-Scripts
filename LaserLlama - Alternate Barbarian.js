@@ -1,6 +1,6 @@
 var iFileName = "LaserLlama - Barbarian.js";
 RequiredSheetVersion("13.0.6");
-ClassList["Barbarian(LaserLlama)"] = {
+ClassList["barbarian(laserllama)"] = {
 
 	name : "Barbarian(LaserLlama)",
 	regExpSearch : /^(?=.*barbarian)(?=.*laserllama).*$/i,
@@ -10,18 +10,23 @@ ClassList["Barbarian(LaserLlama)"] = {
 	die : 12,
 	improvements : [0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
 	saves : ["Str", "Con"],
-	skills : ["\n\n" + toUni("MyClass") + ": Choose two from Animal Handling, Athletics, History, Intimidation, Nature, Perception, and Survival."], 	
-	armor : [ 
-		[true, true, false, true], 
-		[true, true, false, true] 
-	],
-	weapons : [
-		[true, true,], 
-		[true, true,] 
-	],
-
-	equipment : "MyClass starting equipment:\n \u2022 greataxe -or- greatsword -or- maul;\n \u2022 two handaxes -or- any simple weapon;\n \u2022 hide armor, an explorer's pack, and four javelins;\n\nAlternatively, choose 2d4 x 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.", 
-	subclasses : ["Primal Path", ["berserker", "brute", "champion", "totem warrior", "alternate ancestral guardian", "alternate battlerager", "alternate storm herald", "alternate zealot", "alternate beast", "alternate wild magic"]], 
+	skillstxt : {
+		primary : "Choose two from Animal Handling, Athletics, History, Intimidation, Nature, Perception, and Survival"
+	},
+	armorProfs : {
+		primary : [true, true, false, true],
+		secondary : [false, false, false, true]
+	},
+	weaponProfs : {
+		primary : [true, true],
+		secondary : [true, true]
+	},
+	equipment : "Barbarian starting equipment:" + 
+				"\n \u2022 greataxe -or- greatsword -or- maul;" +
+				"\n \u2022 two handaxes -or- any simple weapon;" +
+				"\n \u2022 hide armor, an explorer's pack, and four javelins;" + 
+				"\n\nAlternatively, choose 2d4 x 10 gp worth of starting equipment instead of both the class' and the background's starting equipment.", 
+	subclasses : ["Primal Path", []], 
 	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], 
 	abilitySave : 1,
 	abilitySaveAlt : 2,
@@ -70,11 +75,9 @@ ClassList["Barbarian(LaserLlama)"] = {
 			name : "Savage Exploits",
 			minlevel : 2,
 			source : [["GMB:LL", 0]],
-			description : desc(["\n", 
-								"Use the \"Choose Feature\" button above to choose Savage Exploits"]),
-			abilitySave : 1,
-			usages : [, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5],
-			additional : [, "d4", "d4", "d4", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10"],
+			description : desc(["Use the \"Choose Feature\" button above to choose Savage Exploits"]),
+			usages : ['', 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5],
+			additional : ['', "d4", "d4", "d4", "d6", "d6", "d6", "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10"],
 			recovery : "short rest",		
 			extraname : "Exploits",
 			extrachoices : [
@@ -98,14 +101,14 @@ ClassList["Barbarian(LaserLlama)"] = {
 									"The target deals half damage for 1 minute.",
 									"The target can make a Con save at the start of each turn, ending the effect on a succes."]),
 				source : [["GMB:LL", 0]],
-				prereq : "Strenght 11"
+				prereqeval : function(v) { return What('Str') >= 11;}
 			},
 			
 			"brace up (constitution 11)" : {
 				name : "Brace Up",
 				description : desc(["As a bonus action, I can expend an Exploit Die to gain temp hp equal to 1 + the roll."]),
 				source : [["GMB:LL", 0]],
-				prereq : "Constitution 11"
+				prereqeval : function(v) { return What('Con') >= 11;}
 			}
 		},
 		
