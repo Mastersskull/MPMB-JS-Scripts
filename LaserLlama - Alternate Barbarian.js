@@ -96,7 +96,7 @@ ClassList["barbarian(laserllama)"] = {
 			"Mighty Thrust (Strength 11)",
 			"Primal Intuition (Wisdom 11)",
 			"Ruthless Strike (Strenght 11)",
-			"Take Down (Strenght 11)"
+			"Take Down (Strength 11)"
 			],
 			extraTimes : levels.map(function (n) {
 					return n < 2 ? 0 : n < 4 ? 2 : n < 6 ? 3 : n < 8 ? 4 : n < 10 ? 5 : n < 13 ? 6 : n < 17 ? 7 : 8;
@@ -222,12 +222,33 @@ ClassList["barbarian(laserllama)"] = {
 				prereqeval : function(v) { return What('Str') >= 11;}
 			}
 		},
-		
+
 		"subclassfeature3" : {
-			name : "Primal Path",
-			source : [["GMB:LL", 0]],
+            name : "Primal Path",
+            source : ["GMB:LL", 0],
+            minlevel : 3,
+            description : desc([
+                "Choose a path that best represents my ferocity and skills and put it in the \"Class\" field.",
+			    "Choose either Berserker, Champion, Totem Warrior or an alternate version of an official path."
+            ])
+        },
+	}
+}
+
+AddSubClass("barbarian(laserllama)", "berserker", { 
+	regExpSearch : /berserker/i,
+	subname : "Berserker",
+	source : ["GMB:LL", 0],
+	features : {
+		"subclassfeature3" : {
+			name : "Berserker Exploits",
+			source : ["GMB:LL", 0],
 			minlevel : 3,
-			description : desc(['Choose a Primal Path that shapes the nature of your rage and put it in the "Class" field '])
+			description : desc(["As a Berserker I possess certain Exploits naturally. I gain additional ones at level 5 and 9."]),
+			autoSelectExtraChoices : [
+				{ extrachoice: "feral senses" },
+				{ extrachoice: "menacing shout" }
+			]
 		}
 	}
-};
+});
