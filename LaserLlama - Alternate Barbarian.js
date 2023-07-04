@@ -542,12 +542,12 @@ ClassList["barbarian(laserllama)"] = {
 
 AddSubClass("barbarian(laserllama)", "berserker", { 
 	regExpSearch : /berserker/i,
-	subname : "Berserker",
+	subname : "Path of the Berserker",
 	source : ["GMB:LL", 0],
 	features : {
 
 		"subclassfeature3" : {
-			name : "Feral Senses",
+			name : "Savage Exploit: Feral Senses",
 			toNotesPage : [{
 				name : "Feral Senses",
 				note : ["When I make a Perception or Survival check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
@@ -559,7 +559,7 @@ AddSubClass("barbarian(laserllama)", "berserker", {
 		},	
 		
 		"subclassfeature3.1" : {
-			name : "Menacing Shout",
+			name : "Savage Exploit: Menacing Shout",
 			toNotesPage : [{
 				name : "Menacing Shout",
 				note : ["As a bonus action I can expend an Exploit Die and force a creature within 30 feet to make a wisdom save. On a failed save the creature is frightened for 1 minute. It can repeat the saving throw at the end of each of its turns. The effect ends early if the creature succeed any of these saves or takes any damage."],				
@@ -582,7 +582,7 @@ AddSubClass("barbarian(laserllama)", "berserker", {
 		},
 	
 		"subclassfeature5" : {
-			name : "Bloodthirsty Critical",
+			name : "Savage Exploit: Bloodthirsty Critical",
 			toNotesPage : [{
 				name : "Bloodthirsty Critical",
 				note : ["When I crit I can expend an Exploit Die to make an additional weapon attack.",
@@ -595,7 +595,7 @@ AddSubClass("barbarian(laserllama)", "berserker", {
 		},
 
 		"subclassfeature5.1" : {
-			name : "Savage Rebuke",
+			name : "Savage Exploit: Savage Rebuke",
 			toNotesPage : [{
 				name : "Savage Rebuke",
 				note : ["When a creature hits me with a melee attack I can expend an Exploit Die to make 1 melee weapon attack back."],		
@@ -616,7 +616,7 @@ AddSubClass("barbarian(laserllama)", "berserker", {
 		},
 
 		"subclassfeature9" : {
-			name : "Roar of Triumph",
+			name : "Savage Exploit: Roar of Triumph",
 			toNotesPage : [{
 				name : "Roar of Triumph",
 				note : ["When I crit I can expend an Exploit Die to let out a cry that can be heard up to 300 feet away.",
@@ -643,6 +643,294 @@ AddSubClass("barbarian(laserllama)", "berserker", {
 			minlevel : 14,
 			source : [["GMB:LL", 0]],
 			action : ["reaction", ""]
+		}
+	}
+});
+
+AddSubClass("barbarian(laserllama)", "brute", { 
+	regExpSearch : /brute/i,
+	subname : "Path of the Brute",
+	source : ["GMB:LL", 0],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Imposing Presence",
+			toNotesPage : [{
+				name : "Imposing Presence",
+				note : ["When I make an Intimidation check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Take Down",
+			toNotesPage : [{
+				name : "Take Down",
+				note : ["As a bonus action I can expend an Exploit die to make a Shove or Grapple attack against a creature in reach and add the roll to my Athletics check."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			action : ["bonus action", ""],				
+			source : [["GMB:LL", 0]]
+		},
+		
+		"subclassfeature3.2" : {
+			name : "The Wrong Crowd",
+			description : desc(["When spending the night in a settlement I have advantage on ability checks that gather information on the settlement, its culture, factions and important figures."]),		
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature3.3" : {
+			name : "Unarmed & Dangerous",
+			description : desc(["My Unarmed Strikes now deal 1d4 damage, 1d6 if both hands are free.",
+								"When I use the attack action to only make Unarmed Strike attacks, I can make an additional one.",
+								"Once per turn when I hit a creature with an Unarmed Strike, I can attempt to grapple it as part of the attack, so long as I have at least 1 hand free for the grapple."]),		
+			minlevel : 3,
+			source : [["GMB:LL", 0]],
+			weaponsAdd : ["Unarmed Strike"],
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if (v.baseWeaponName == "unarmed strike") {
+							var aBruteDie = function (n) {return  (n < 10 ? 4 : n < 14 ? 6 : 8);}(classes.known["barbarian(laserllama)"].level)
+							try {
+								var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
+							} catch (e) {
+								var curDie = 'x';
+							};
+							if (isNaN(curDie) || curDie < aBruteDie) {
+								fields.Damage_Die = '1d' + aBruteDie;
+								fields.Description += (fields.Description ? '; ' : '') + 'Versatile (1d' + (aBruteDie + 2)  +')';
+							};
+						};
+					}
+				]
+			}
+		},
+	
+		"subclassfeature5" : {
+			name : "Savage Exploit: Concussive Blow",
+			toNotesPage : [{
+				name : "Concussive Blow",
+				note : ["When I hit a creature with a melee attack, I can expend an Exploit Die to force it to make a Con save.",
+				"On a failed save the target's speed becomes 0, can only speak falteringly, cannot take (bonus) actions/reactions and has disadvantage on Dex saves.",
+				"These effects last until the beginning of my next turn."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Greater Hurl",
+			toNotesPage : [{
+				name : "Greater Hurl",
+				note : ["As an action force a creature smaller than me within range to make a Str save.",
+				"On a failed save the target is thrown towards a point I can see within 30 feet.",
+				"If they land in an unoccupied space that can't support their weight they take fall damage and fall prone.",
+				"If they hit another creature, that creature must make a Dex save or take bludgeoning damage equal to the Exploit Die roll + my Str mod.",
+				"Counting as 1 size larger for carrying or grappling works for this exploit."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			action : ["action",""],
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature6" : {
+			name : "Fists of Fury",
+			description : desc(["When I hit a creature I can use concussive blow without expending an Exploit Die an amount of times equal to my Con mod."],
+			"While raging, my weapons count as magical for the purpose of overcoming resistances and immunities to nonmagical damage."),
+			minlevel : 6,
+			usages : "Con mod per",
+			recovery : "long rest",
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: Disorienting Blow",
+			toNotesPage : [{
+				name : "Disorienting Blow",
+				note : ["When I hit a creature with a melee weapon attack I can expend an Exploit Die to so the creature for 1 minute:",
+				"Cannot take reactions and have their speed halved. Must choose between using their action or bonus action.",
+				"Has -2AC and -2 to Dex saves. Can only make a single attack during its turn.",
+				"The creature can make a Wis save at the end of each of its turns, ending the effect on a succes."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			source : [["GMB:LL", 0]]	
+		},
+
+		"subclassfeature10" : {
+			name : "Iron Grip",
+			description : desc(["The size of creatures I can grapple increases by 1 size.", 
+			"When I grapple a creature more than 1 size larger it can move as normal and I move with it.",
+			"While grappling a creature one size larger or smaller, I can move at normal speed.",
+			"My unarmed strikes become 1d6 (1d8 when both hands are free).",
+			"My climbing speed equals my walking speed."]),
+			minlevel : 10,
+			source : [["GMB:LL", 0]],
+			speed : { climb : { spd : "walk", enc : "walk" } }
+		},
+
+		"subclassfeature14" : {
+			name : "Brutish Determination",
+			description : desc(["I can add 1d4 to Str/Dex/Con and death saves.",
+			"Rolling a 20 or higher on my death saves lets me stand up instantly with 1hp."],
+			"my unarmes strikes become 1d8 (1d10 when both hands are free)."),
+			minlevel : 14,
+			source : [["GMB:LL", 0]],
+		}
+	}
+});
+
+AddSubClass("barbarian(laserllama)", "champion", { 
+	regExpSearch : /champion/i,
+	subname : "Path of the Champion",
+	source : ["GMB:LL", 0],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Feat of Strenght",
+			toNotesPage : [{
+				name : "Feat of Strenght",
+				note : ["When I make a Str or Con related check/save, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Mighty Leap",
+			toNotesPage : [{
+				name : "Mighty Leap",
+				note : ["When I make a running/standing jump, I can expend an Exploit Die and additionally jump [5 x roll] feet (minimum of 5)",
+				"This jump can exceed my remaining speed."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			action : ["bonus action", ""],				
+			source : [["GMB:LL", 0]]
+		},
+		
+		"subclassfeature3.2" : {
+			name : "Fighting Style",
+			description : desc('Choose a Fighting Style for the fighter using the "Choose Feature" button above'),
+			choices : ["Great Weapon Fighting", "Dual Wielding", "Improvised Fighting", "Strongbow"],
+			"great weapon fighting" : FightingStyles.great_weapon,
+			"dual wielding" : {
+				name : "Dual Wielding",
+				description : desc(["When taking the attack action while two-weapon fighting, I can make an additional attack as part of the action instead of a bonus action.",
+				"My ability modifiers are added to this attack's hit and damage roll."]),
+				source : [["GMB:LL", 0]]
+			},
+			"improvised fighting" :{
+				name : "Improvised Fighting",
+				description : desc(["I become proficient in improvised weapons.",
+				"When I hit with a nonmagical improvised weapon I can roll the damage dice twice and take the higher roll. Doing so breaks the weapon."]),
+				weaponProfs : [true, true, ["Improvised Weapons"]],
+				weaponsAdd : ["Improvised Weapons"],
+				source : [["GMB:LL", 0]]
+			},
+			"strongbow" : {
+				name : "Strongbow",
+				description : desc(["I can choose to use my Str instead of Dex for Longbow/Shortbow hit and damage rolls."]),
+				source : [["GMB:LL", 0]]
+			},	
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature3.3" : {
+			name : "Martial Training",
+			description : desc(["While Raging, everytime I use an exploit my Exploit Die it increase by one size (d6, d8, etc.), to a max of d12.",
+			"The exploit that triggers the increase also benefits from it. The Exploit Die size resets when my Rage ends."]),		
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},
+	
+		"subclassfeature5" : {
+			name : "Savage Exploit: Thunderous Blow",
+			toNotesPage : [{
+				name : "Thunderous Blow",
+				note : ["When I hit a creature with a melee weapon attack I can expend an Exploit Die to force them to make a Str save.",
+				"On a failed save the target takes bludgeoning damage equal to the Exploit Die roll and is pushed away [5 x Str mod] feet.",
+				"Creatures larger than me has advantage on the save."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Warrior's Challenge",
+			toNotesPage : [{
+				name : "Warrior's Challenge",
+				note : ["As a bonus action I can expend an Exploit die to force a creature to make a Wis save.",
+				"On a failed save the target has disadvantage on any attack roll that isn't targeted at me for 1 minute.",
+				"The target can repeat the saving throw at the end of each of its turns, ending the effect on a succes."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			action : ["bonus action",""],
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature6" : {
+			name : "Mighty Blow",
+			description : desc(["When I hit a creature with a melee or thrown weapon attack I can end my rage to turn the hit into a crit."]),
+			minlevel : 6,
+			usages : 1,
+			recovery : "short rest",
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature6.1" : {
+			name : "Remarkable Athlete",
+			description : desc(["When I use Feat of Strenght or Mightly Leap I can choose to use a " + ((classes.known["barbarian(laserllama)"].level) < 14 ? "1d6" : "1d8") + " instead of expending an Exploit Die."]),
+			minlevel : 6,
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: Resilient Body",
+			toNotesPage : [{
+				name : "Resilient Body",
+				note : ["When I take damage and can see the source I can expend an Exploit die to reduce the damage taken by twice the roll + my Con mod.",
+				"If I rolled higher than the damage I took, I gain temp hp equal to the difference in values."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			action : ["reaction",""],
+			source : [["GMB:LL", 0]]	
+		},
+
+		"subclassfeature10" : {
+			name : "Invigorating Critical",
+			description : desc(["When I crit with a melee or thrown weapon attack, I regain hp equal to my Con mod + an Exploit Die roll (minimum of 1hp)."]),
+			minlevel : 10,
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature14" : {
+			name : "Survivor",
+			description : desc(["At the beginning of each of my turns I gain temp hp equal to my Con mod (minimum of 1)."]),
+			minlevel : 14,
+			source : [["GMB:LL", 0]],
 		}
 	}
 });
