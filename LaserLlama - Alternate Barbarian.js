@@ -854,7 +854,7 @@ AddSubClass("barbarian(laserllama)", "champion", {
 
 		"subclassfeature3.3" : {
 			name : "Martial Training",
-			description : desc(["While Raging, everytime I use an exploit my Exploit Die it increase by one size (d6, d8, etc.), to a max of d12.",
+			description : desc(["While Raging, every time I use an exploit my Exploit Die it increase by one size (d6, d8, etc.), to a max of d12.",
 			"The exploit that triggers the increase also benefits from it. The Exploit Die size resets when my Rage ends."]),		
 			minlevel : 3,
 			source : [["GMB:LL", 0]]
