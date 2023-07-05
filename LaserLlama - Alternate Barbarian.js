@@ -1679,8 +1679,7 @@ AddSubClass("barbarian(laserllama)", "storm herald", {
 AddSubClass("barbarian", "zealot", {
 	regExpSearch : /zealot/i,
 	subname : "Path of the Zealot",
-	source : [["X", 11]],
-	fullname : "Zealot",
+	source : [["GMB:LL", 11]],
 	features : {
 
 		"subclassfeature3" : {
@@ -1739,7 +1738,7 @@ AddSubClass("barbarian", "zealot", {
 				]),
 			}
 		},
-		"subclassfeature3.1" : {
+		"subclassfeature3.3" : {
 			name : "Warrior of the Gods",
 			source : [["X", 11]],
 			minlevel : 3,
@@ -1820,6 +1819,349 @@ AddSubClass("barbarian", "zealot", {
 				"I still must make death saves, and I suffer the normal effects of taking damage.",
 				"After 3 failed death saves, I must succeed on a Con save every turn to maintain my Rage.",
 				"The save is DC 10, adding 5 for each additional turn. I die if I'm still at 0 hp after this."
+			])
+		}
+	}
+});
+
+AddSubClass("barbarian", "beast", {
+	regExpSearch : /zealot/i,
+	subname : "Path of the Beast",
+	source : [["GMB:LL", 0]],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Mighty Leap",
+			toNotesPage : [{
+				name : "Mighty Leap",
+				note : ["When I make a running/standing jump, I can expend an Exploit Die and additionally jump [5 x roll] feet (minimum of 5)",
+				"This jump can exceed my remaining speed."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			action : ["bonus action", ""],				
+			source : [["GMB:LL", 0]]
+		},
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Primal Intuition",
+			toNotesPage : [{
+				name : "Primal Intuition",
+				note : ["When I make an Animal Handling, Nature or Survival check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,		
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature3" : {
+			name : "Form of the Beast",
+			source : [["T", 24]],
+			minlevel : 3,
+			description : desc([
+				"When I enter my rage, I can transform to gain a bite, tail, or claws attack for that rage",
+				"On a hit with the bite attack once on each of my turns, I can heal my Prof Bonus in HP",
+				"This only works if I have less than half my hit points when I hit with this bite attack",
+				"With the claws I can make one extra attack when I attack with it in my Attack action",
+				"As a reaction with the tail when I'm hit, I can add 1d8 to my AC for that attack",
+				"This only works if the hit is from an attack roll made a creature I can see within 30 ft"
+			]),
+			weaponOptions : [{
+				regExpSearch : /^(?=.*(bestial|beast))(?=.*bite).*$/i,
+				name : "Bestial Bite",
+				source : [["T", 24]],
+				ability : 1,
+				type : "Natural",
+				damage : [1, 8, "piercing"],
+				range : "Melee",
+				description : "Only in rage; On a hit once on my turn, regain Prof Bonus in HP (if below 1/2 HP)",
+				abilitytodamage : true,
+				bestialNaturalWeapon : true
+			}, {
+				regExpSearch : /^(?=.*(bestial|beast))(?=.*claws?).*$/i,
+				name : "Bestial Claws",
+				source : [["T", 24]],
+				ability : 1,
+				type : "Natural",
+				damage : [1, 6, "slashing"],
+				range : "Melee",
+				description : "Only in rage; Extra attack if used as part of Attack action",
+				abilitytodamage : true,
+				bestialNaturalWeapon : true
+			}, {
+				regExpSearch : /^(?=.*(bestial|beast))(?=.*tail).*$/i,
+				name : "Bestial Tail",
+				source : [["T", 25]],
+				ability : 1,
+				type : "Natural",
+				damage : [1, 8, "piercing"],
+				range : "Melee",
+				description : "Reach; Only in rage",
+				abilitytodamage : true,
+				bestialNaturalWeapon : true
+			}],
+			weaponsAdd : ["Bestial Bite", "Bestial Claws", "Bestial Tail"],
+			additional : levels.map(function(n) {
+				return n < 6 ? "" : "chosen weapon counts as magical";
+			}),
+			action : [["reaction", "Bestial Tail"]]
+		},
+
+		"subclassfeature5" : {
+			name : "Savage Exploit: Savage Rebuke",
+			toNotesPage : [{
+				name : "Savage Rebuke",
+				note : ["When a creature hits me with a melee attack I can expend an Exploit Die to make 1 melee weapon attack back."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,					
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Bloodthirsty Critical",
+			toNotesPage : [{
+				name : "Bloodthirsty Critical",
+				note : ["When I crit I can expend an Exploit Die to make an additional weapon attack.",
+						"I cannot use this exploit on a crit achieved by this exploit."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature6" : {
+			name : "Bestial Soul",
+			source : [["T", 25]],
+			minlevel : 6,
+			description : desc([
+				"When I finish a short rest, I can choose one of the following benefits until my next rest:",
+				"Swimming speed equal to my walking speed and I can breathe underwater.",
+				"Climb speed (same as walking) and no check to climb difficult surfaces or upside down.",
+				"Once per turn when I jump, I can extend it by the result of an Athletics check in feet."
+			]),
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if (v.theWea.bestialNaturalWeapon && !v.thisWeapon[1] && !v.theWea.isMagicWeapon && !(/counts as( a)? magical/i).test(fields.Description)) {
+							fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical';
+						};
+					},
+					"The natural melee weapon that I gain from Form of the Beast count as magical for the purpose of overcoming resistance and immunity to nonmagical attacks and damage."
+				]
+			}
+		},
+
+		"subclassfeature6.1" : {
+			name : "Savage Mastery",
+			source : ["GMB:LL", 0],
+			minlevel : 6,
+			description : levels.map(function(n) {
+				if (n < 10) {
+					var descr = ["When Raging, I manifest two of my natural weapons of my choice."];
+				} else {
+					var descr = ["When Raging, I manifest all of my natural weapons."];
+				}
+				return desc(descr);
+			  }),
+			},
+
+			"subclassfeature9" : {
+				name : "Savage Exploit: Roar of Triumph",
+				toNotesPage : [{
+					name : "Roar of Triumph",
+					note : ["When I crit I can expend an Exploit Die to let out a cry that can be heard up to 300 feet away.",
+							"I and a number of creatures that heard me (up to my Con mod, minimum 1) gain temp hp equal to my level + Con mod."],
+					page3notes : true,							
+					source : [["GMB:LL", 0]]
+					}],	
+				minlevel : 9,	
+				source : [["GMB:LL", 0]]	
+			},
+		
+		"subclassfeature10" : {
+			name : "Infectious Fury",
+			source : [["T", 25]],
+			minlevel : 10,
+			description : desc([
+				"In rage, when I hit a creature with my natural weapon, I can have it make a Wis save.",
+				"If it fails it suffers one effect of my choice:",
+				"It uses its reaction to make a melee attack against one creature I can see of my choice -or-",
+				"It takes 2d12 psychic damage.",
+				"If I'm out of uses of this feature, I can expend an Exploit Die to use it."
+			]),
+			usages : "Con mod per ",
+			usagescalc : "event.value = Math.max(1, What('Con Mod'));",
+			recovery : "long rest"
+
+		},
+		
+		"subclassfeature14" : {
+			name : "Call the Hunt",
+			source : [["T", 25]],
+			minlevel : 14,
+			description : desc([
+				"When I enter rage, I can choose my Con mod of willing creatures I can see within 30 ft.",
+				"Once on each of their turns, if they hit an attack, they can have it deal additional damage equal to my Exploit Die.",
+				"This lasts as long as I rage; I gain 5 temporary HP per creature that accepts this benefit.",
+				"When I have no more uses of this feature, I can expend an Exploit Die to use it again."
+			]),
+			usages : 1,
+			recovery : "short rest"
+		}
+	}
+});
+
+AddSubClass("barbarian", "wild magic", {
+	regExpSearch : /^(?=.*wild)(?=.*magic).*$/i,
+	subname : "Path of Wild Magic",
+	source : [["GMB:LL", 0]],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Mighty Leap",
+			toNotesPage : [{
+				name : "Mighty Leap",
+				note : ["When I make a running/standing jump, I can expend an Exploit Die and additionally jump [5 x roll] feet (minimum of 5)",
+				"This jump can exceed my remaining speed."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			action : ["bonus action", ""],				
+			source : [["GMB:LL", 0]]
+		},
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Imposing Presence",
+			toNotesPage : [{
+				name : "Imposing Presence",
+				note : ["When I make an Intimidation check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+
+		"subclassfeature3.3" : {
+			name : "Magic Awareness",
+			source : [["GMB:LL", 0]],
+			minlevel : 3,
+			description : desc(["As an action, until my next turn I can detect magic items or spells within 60 feet of me that aren't behind total cover.",
+				"I can use this feature once per short rest. Each time thereafter I can use it by expending an Exploit Die."]),
+			action : [["action", ""]]
+		},
+
+		"subclassfeature3" : {
+			name : "Wild Surge",
+			source : [["GMB:LL", 0]],
+			minlevel : 3,
+			description : desc(["When I rage, I roll on this class' Wild Magic Table (D20).",
+			"If the rolled effect requires a saving throw, it uses my Exploit Die DC."]),
+			descriptionfull : ["1 - Creatures of your choice that you can see within 30 feet of you must succeed on a Constitution saving throw or take necrotic damage equal to two rolls of your Exploit Die. You then gain temporary hit points equal to two rolls of your Exploit Die + your level",
+			"2 - You teleport up to 30 feet to an unoccupied space you can see. Until the end of your current Rage, you can use this effect again on each of your turns as a bonus action.",
+			"3 - An orb of wild magic explodes at a point that you can see within 30 feet. Creatures within 5 feet must succeed on a Dexterity saving throw or take force damage equal to your Exploit Die. Until the end of your current Rage, you can use a bonus action to cause this effect to happen again.",
+			"4 - Magic infuses one weapon of your choice that you are holding. Until your current Rage, the weapon's damage type changes to force, and it gains the light and thrown properties, with a normal range of 20 feet and a long range of 60 feet. If the magic weapon leaves your hand, it appears in your hand at the end of your turn.",
+			"5 - Whenever a creature hits you with an attack roll before the end of your current Rage, it takes force damage equal to your Exploit Die, as magic lashes out in retribution.",
+			"6 - Until the end of your current Rage, you are surrounded by multicolored, protective lights; you, and allied creatures within 10 feet of you, all gain a +1 bonus to your Armor Class.",
+			"7 - Flowers and vines temporarily grow around you; until the end of your current Rage, the ground within 15 feet of you is considered difficult terrain for creatures of your choice.",
+			"8 - Roll another d20. On an even roll, your size grows by one category as if by the enlarge part of the enlarge/reduce spell. On an odd roll, your size is reduced by one category as if by the reduce part of the enlarge/reduce spell.",
+			"9 - You can't speak for duration of your current Rage. Whenever you try, a small bird flies out of your mouth and flies toward the sun.",
+			"10 - You are transported to the Astral Plane until the end of your next turn, after which time you return to the space you previously occupied or the nearest unoccupied space.",
+			"11 - For the duration of your current Rage, you gain resistance to the last instance of damage you took, until you take another instance of damage. For example, if you take fire damage from a red dragon's fire breath, you are resistant to fire damage until you take another type of damage.",
+			"12 - For the duration of your current Rage, every hair on your body grows by one foot at the end of each of your turns. When your current Rage ends, all of your hair falls out.",
+			"13 - A bolt of radiant light shoots from your chest. A creature of your choice that you can see within 30 feet must succeed on a Constitution saving throw or take radiant damage equal to your Exploit Die and be blinded until the start of your next turn. Until the end of your current Rage, you can use this effect again on each of your turns as a bonus action.",
+			"14 - For the duration of your current Rage, you can walk through solid objects and creatures as if they were difficult terrain. If you end your movement inside a creature or object, you are instantly shunted to the nearest unoccupied space, taking 1d10 force damage for each 5 feet that you were forced to travel.",
+			"15 - Roll a d10. Your age changes by a number of years equal to the roll. If the roll is odd, you get younger (minimum 1 year old). If the roll is even, you get older.",
+			"16 - For the duration of your current Rage, any flammable object you touch that isn't being worn or carried, instantly bursts into flame.",
+			"17 - Your limbs grow strangely long. For the duration of your current Rage, the reach of your melee attacks increases by 5 feet.",
+			"18 - Your muscles are engorged with wild magic. For the duration of your current Rage, all creatures have disadvantage on any saving throws to resist the effects of your Exploits.",
+			"19 - For the duration of your current Rage, the distance of your long and high jumps is tripled, even if this extra distance would exceed your remaining movement.",
+			"20 - You instantly regain all expended uses of your Rage."],
+		},
+
+		"subclassfeature5" : {
+			name : "Savage Exploit: Thunderous Blow",
+			toNotesPage : [{
+				name : "Thunderous Blow",
+				note : ["When I hit a creature with a melee weapon attack I can expend an Exploit Die to force them to make a Str save.",
+				"On a failed save the target takes bludgeoning damage equal to the Exploit Die roll and is pushed away [5 x Str mod] feet.",
+				"Creatures larger than me has advantage on the save."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Immovable Stance",
+			toNotesPage : [{
+				name : "Immovable Stance",
+				note : ["As a bonus action I can expend an Exploit Die to plant my feet.",
+				"Until I move, a creature trying to move me or move through my space has to succeed on a Str save to do so."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			action : ["bonus action",""],
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature6" : {
+			name : "Bolstering Magic",
+			source : [["T", 26]],
+			minlevel : 6,
+			description : desc([
+				"As an action, I can touch a creature or myself and confer one of the following benefits:",
+				"For 10 minutes, they can add an Exploit Die to ability checks and saving throws of a stat I choose.",
+				"The target gains temp hp equal to my level + Exploit Die. While the target has temp hp this way, they are immune to Wild Magic effects.",
+				"The target I touch regains a spell slot whose level equals my Exploit Die expended for this benefit.",
+				"I can use this feature a number of times equal to my Con mod."
+			]),
+			usages: "Con mod per ",
+			usagescalc : "event.value = Math.max(1, What('Con Mod'));",
+			recovery: "long rest",
+			action : [["action", ""]]
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: Savage Defiance",
+			toNotesPage : [{
+				name : "Savage Defiance",
+				note : ["As an action I can expend an Exploit Die to challenge each creature of my choice within 60 feet of me that can hear me.",
+				"Each of these creatures has disadvantage on any attack they make that isn't against until they hit me."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			action : ["action",""],
+			source : [["GMB:LL", 0]]	
+		},
+		
+		"subclassfeature10" : {
+			name : "Unstable Backlash",
+			source : [["T", 26]],
+			minlevel : 10,
+			description : desc([
+				"As a reaction in rage when taking damage or failing a save, I can lash out with magic",
+				"I roll on the Wild Magic table and immediately apply the roll, replacing my current effect"
+			]),
+			action : [["reaction", " (in rage on damage/save fail)"]]
+		},
+		
+		"subclassfeature14" : {
+			name : "Controlled Surge",
+			source : [["T", 26]],
+			minlevel : 14,
+			description : desc([
+				"Whenever I roll on the Wild Magic table, I can roll two dice and choose which to use",
+				"If I roll the same on both dice, I can instead choose any effect on the Wild Magic table"
 			])
 		}
 	}
