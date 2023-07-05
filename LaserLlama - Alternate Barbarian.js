@@ -760,6 +760,15 @@ AddSubClass("barbarian(laserllama)", "brute", {
 			usages : "Con mod per ",
 			usagescalc : "event.value = Math.max(1, What('Con Mod'));",
 			recovery : "long rest",
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if (!v.isSpell && !v.thisWeapon[1] && !v.theWea.isMagicWeapon && !(/counts as( a)? magical/i).test(fields.Description) && (v.baseWeaponName === "unarmed strike")) {
+							fields.Description += (fields.Description ? '; ' : '') + 'Counts as magical while Raging.';
+						};
+					},
+				]
+			},
 			source : [["GMB:LL", 0]]
 		},
 
