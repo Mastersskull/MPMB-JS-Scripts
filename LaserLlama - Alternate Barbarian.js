@@ -1458,3 +1458,221 @@ AddSubClass("barbarian(laserllama)", "battlerager", {
 		}
 	}
 });
+
+AddSubClass("barbarian(laserllama)", "storm herald", { 
+	regExpSearch : /^(?=.*storm)(?=.*herald).*$/i,
+	subname : "Path of the Storm Herald",
+	source : ["GMB:LL", 0],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Destructive Strike",
+			toNotesPage : [{
+				name : "Destructive Strike",
+				note : ["If I expend an Exploit Die when attacking a nonmagical object, the attack deals maximum damage and I add the roll to the damage."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Feral Senses",
+			toNotesPage : [{
+				name : "Feral Senses",
+				note : ["When I make a Perception or Survival check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3" : {
+			name : "Storm Aura",
+			source : [["X", 10]],
+			minlevel : 3,
+			description : desc([
+				"While raging, I emanate a 10-ft radius aura.",
+				'Use the "Choose Feature" button above to select the type of aura']),
+			choices : ["Desert", "Sea", "Tundra"],
+			action : ["bonus action", " (reactivate)"],
+			"desert" : {
+				name : "Storm Aura: Desert",
+				description : desc([
+					"The aura's features activate when I enter my rage or as a bonus action while raging",
+					"Whenever I active my aura, anybody in my aura other than me takes fire damage equal to my Exploit Die."
+				])
+			},
+			"sea" : {
+				name : "Storm Aura: Sea",
+				description : desc([
+					"The aura's features activate when I enter my rage or as a bonus action while raging",
+					"Whenever I active my aura, I can choose one creature in my aura other than me",
+					"It takes lightning damage equal to my Exploit die + Con mod.",
+					"It takes half as much on a successful Dexterity saving throw"
+				])
+			},
+			"tundra" : {
+				name : "Storm Aura: Tundra",
+				description : desc([
+					"The aura's features activate when I enter my rage or as a bonus action while raging",
+					"Whenever I active my aura, all creatures of my choice in my aura gain temp hp equal to my Exploit Die."
+				])
+			},
+			choiceDependencies : [{
+				feature : "subclassfeature6"
+			}, {
+				feature : "subclassfeature10"
+			}, {
+				feature : "subclassfeature14"
+			}]
+		},
+	
+		"subclassfeature5" : {
+			name : "Savage Exploit: Shattering Slam",
+			toNotesPage : [{
+				name : "Shattering Slam",
+				note : ["In place of an attack I can expend an Exploit Die to force creatures within 5 feet of me to make a Dex save.",
+				"On a failed save, the creature takes bludgeoning damage equal to the Exploit Die roll and my Str mod and fall prone.",
+				"On a successful save the creature takes half damage without falling prone.",
+				"The area I strike becomes difficult terrain if it's stone or loose earth, and stays this way until someone uses their action to clear it."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Thunderous Blow",
+			toNotesPage : [{
+				name : "Thunderous Blow",
+				note : ["When I hit a creature with a melee weapon attack I can expend an Exploit Die to force them to make a Str save.",
+				"On a failed save the target takes bludgeoning damage equal to the Exploit Die roll and is pushed away [5 x Str mod] feet.",
+				"Creatures larger than me has advantage on the save."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature6" : {
+			name : "Storm Soul",
+			source : [["X", 10]],
+			minlevel : 6,
+			description : desc(['Use the "Choose Feature" button above to select the effect']),
+			choices : ["desert", "sea", "tundra"],
+			choicesNotInMenu : true,
+			"desert" : {
+				name : "Storm Soul: Desert",
+				description : desc([
+					"I have resistance to fire damage and don't suffer the effects of extreme heat",
+					"As an action, I can set fire to an unattended flammable object I touch"
+				]),
+				action : ["action", " (ignite)"],
+				dmgres : ["Fire"],
+				savetxt : { immune : ["effects of extreme heat"] }
+			},
+			"sea" : {
+				name : "Storm Soul: Sea",
+				description : desc([
+					"I can breathe underwater and I have 30 ft swim speed",
+					"In addition, I have resistance to lightning damage"
+				]),
+				dmgres : ["Lightning"],
+				speed : { swim : { spd : 30, enc : 20 } }
+			},
+			"tundra" : {
+				name : "Storm Soul: Tundra",
+				description : desc([
+					"I have resistance to cold damage and don't suffer the effects of extreme cold",
+					"As an action, I can turn a 5-ft cube of water to ice, which melts after 1 minute",
+					"This action fails if there are any creatures within the cube of water"
+				]),
+				action : ["action", " (freeze)"],
+				dmgres : ["Cold"],
+				savetxt : { immune : ["effects of extreme cold"] }
+			}
+		},
+
+		"subclassfeature6.1" : {
+			name : "Elemental Strikes",
+			source : [["GMB:LL", 0]],
+			minlevel : 6,
+			description : desc(["When I use a damage dealing exploit while Raging, I can change the damage to match my aura:",
+			"Desert - Fire, Sea - Lightning, Tundra - Cold."]),
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: War Cry",
+			toNotesPage : [{
+				name : "War Cry",
+				note : ["As an action I can expend an Exploit Die to force any hostile creature within a 30ft cone of me to make a Wis save.",
+				"On a failed save the creature drop what it is holding and becomes frightened of me for 1 minute.",
+				"Affected creatures can attempt the save again at the end of their turn when they don't have line of sight on me, ending the effect on a succes."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			action : ["action",""],
+			source : [["GMB:LL", 0]]	
+		},
+
+		"subclassfeature10" : {
+			name : "Shielding Storm",
+			source : [["X", 10]],
+			minlevel : 10,
+			description : desc(["In rage, creatures of my choice within my Storm Aura also gain Storm Soul resistance"]),
+			choices : ["desert", "sea", "tundra"],
+			choicesNotInMenu : true,
+			"desert" : {
+				name : "Shielding Storm: Desert",
+				description : desc(["While raging, creatures of my choice within my Storm Aura also gain resistance to fire."])
+			},
+			"sea" : {
+				name : "Shielding Storm: Sea",
+				description : desc(["In rage, creatures of my choice within my Storm Aura also gain resistance to lightning."])
+			},
+			"tundra" : {
+				name : "Shielding Storm: Tundra",
+				description : desc(["While raging, creatures of my choice within my Storm Aura also gain resistance to cold."])
+			}
+		},
+
+		"subclassfeature14" : {
+			name : "Raging Storm",
+			source : [["GMB:LL", 0]],
+			minlevel : 14,
+			description : desc(['Use the "Choose Feature" button above to select the effect.']),
+			choices : ["desert", "sea", "tundra"],
+			choicesNotInMenu : true,
+			"desert" : {
+				name : "Raging Storm: Desert",
+				description : desc([
+					"As a reaction when hit by a creature in my Storm Aura, I can have it make a Dex save.",
+					"On a failed save, the attacker takes fire damage equal to my Exploit Die + Con mod.",
+					"My Storm Herald features have DC 8 + my Proficiency Bonus + my Constitution modifier"
+				]),
+				action : ["reaction", " (if hit)"],
+			},
+			"sea" : {
+				name : "Raging Storm: Sea",
+				description : desc([
+					"As a reaction when I hit a creature in my Storm Aura, I can have it make a Str save",
+					"On a failed save, the creature is knocked prone, as if struck by a wave"
+				]),
+				action : ["reaction", " (with attack)"]
+			},
+			"tundra" : {
+				name : "Raging Storm: Tundra",
+				description : desc([
+					"Whenever I activate my Storm Aura, I can choose a creature in my aura that I can see",
+					"It must make a Str save or have its speed reduced to 0 until the start of my next turn"
+				])
+			}
+		}
+	}
+});
