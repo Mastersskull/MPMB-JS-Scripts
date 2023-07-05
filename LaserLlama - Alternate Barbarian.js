@@ -1142,8 +1142,7 @@ AddSubClass("barbarian(laserllama)", "totem warrior", {
 			choices : ["Bear", "Eagle", "Wolf"],
 			"bear" : {
 				name : "Bear Attunement",
-				description : desc(["While raging, any creature that sees me within 5 ft has disadv. on attacks vs. others",
-				"Enemies that can't perceive me or be frightened are immune"])
+				description : desc(["While raging, any creature I hit with a melee weapon attack has disadv. on attacks vs. others"])
 			},
 			"eagle" : {
 				name : "Eagle Attunement",
