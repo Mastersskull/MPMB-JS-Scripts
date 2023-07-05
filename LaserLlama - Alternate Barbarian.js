@@ -900,7 +900,14 @@ AddSubClass("barbarian(laserllama)", "champion", {
 
 		"subclassfeature6.1" : {
 			name : "Remarkable Athlete",
-			description : desc(["When I use Feat of Strenght or Mightly Leap I can choose to use a " + ((classes.known["barbarian(laserllama)"].level) < 14 ? "1d6" : "1d8") + " instead of expending an Exploit Die."]),
+			description : levels.map(function(n) {
+				if (n < 14) {
+					var descr = ["When I use Feat of Strenght or Mightly Leap I can choose to use a 1d6 instead of expending an Exploit Die."];
+				} else {
+					var descr = ["When I use Feat of Strenght or Mightly Leap I can choose to use a 1d8 instead of expending an Exploit Die."];
+				}
+				return desc(descr);
+			  }),
 			minlevel : 6,
 			source : [["GMB:LL", 0]]
 		},
