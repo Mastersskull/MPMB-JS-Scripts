@@ -534,9 +534,17 @@ ClassList["barbarian(laserllama)"] = {
 			name : "Improved Critical",
 			source : ["GMB:LL", 0],
 			minlevel : 9,
-			description : desc(["I now crit on a 19 or higher.",
-								"This becomes 18 or higher at level 13 and 17 or higher at level 17."])
-		}
+			description : levels.map(function(n) {
+				if (n < 13) {
+					var descr = ["I now crit on rolling a 19 or higher."];
+				} else if (n > 12 && n <17){
+					var descr = ["I now crit on rolling an 18 or higher."];
+				} else {
+					var descr = ["I now crit on rolling a 17 or higher."];
+				}
+				return desc(descr);
+			  }),
+			}
 	}
 }
 
