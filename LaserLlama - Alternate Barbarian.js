@@ -1653,24 +1653,23 @@ AddSubClass("barbarian(laserllama)", "storm herald", {
 				name : "Raging Storm: Desert",
 				description : desc([
 					"As a reaction when hit by a creature in my Storm Aura, I can have it make a Dex save.",
-					"On a failed save, the attacker takes fire damage equal to my Exploit Die + Con mod.",
-					"My Storm Herald features have DC 8 + my Proficiency Bonus + my Constitution modifier"
+					"On a failed save, the attacker takes fire damage equal to my Exploit Die + Con mod."
 				]),
 				action : ["reaction", " (if hit)"],
 			},
 			"sea" : {
 				name : "Raging Storm: Sea",
 				description : desc([
-					"As a reaction when I hit a creature in my Storm Aura, I can have it make a Str save",
-					"On a failed save, the creature is knocked prone, as if struck by a wave"
+					"As a reaction when I hit a creature in my Storm Aura, I can have it make a Str save.",
+					"On a failed save, the creature is knocked prone, as if struck by a wave."
 				]),
 				action : ["reaction", " (with attack)"]
 			},
 			"tundra" : {
 				name : "Raging Storm: Tundra",
 				description : desc([
-					"Whenever I activate my Storm Aura, I can choose a creature in my aura that I can see",
-					"It must make a Str save or have its speed reduced to 0 until the start of my next turn"
+					"Whenever I activate my Storm Aura, I can choose a creature in my aura that I can see.",
+					"It must make a Str save or have its speed reduced to 0 until the start of my next turn."
 				])
 			}
 		}
