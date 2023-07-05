@@ -966,3 +966,194 @@ AddSubClass("barbarian(laserllama)", "champion", {
 		}
 	}
 });
+
+AddSubClass("barbarian(laserllama)", "totem warrior", { 
+	regExpSearch : /^(?=.*totem)(?=.*warrior).*$/i,
+	subname : "Path of the Totem Warrior",
+	source : ["GMB:LL", 0],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Spirit Guide",
+			source : [["GMB:LL", 0]],
+			minlevel : 3,
+			description : desc(["I can cast Beast Sense and Speak with Animals as rituals (PHB 217 \u0026 277)"]),
+			spellcastingBonus : {
+				name : "Spirit Guide",
+				spells : ["beast sense", "speak with animals"],
+				selection : ["beast sense", "speak with animals"],
+				firstCol : "(R)",
+				times : 2
+			},
+			spellChanges : {
+				"beast sense" : {
+					time : "10 min",
+					changes : "I can cast this spell only as a ritual, thus its casting time is 10 minutes longer."
+				},
+				"speak with animals" : {
+					time : "10 min",
+					changes : "I can cast this spell only as a ritual, thus its casting time is 10 minutes longer."
+				}
+			}
+		},
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Mighty Leap",
+			toNotesPage : [{
+				name : "Mighty Leap",
+				note : ["When I make a running/standing jump, I can expend an Exploit Die and additionally jump [5 x roll] feet (minimum of 5)",
+				"This jump can exceed my remaining speed."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			action : ["bonus action", ""],				
+			source : [["GMB:LL", 0]]
+		},
+		
+		"subclassfeature3.2" : {
+			name : "Savage Exploit: Primal Intuition",
+			toNotesPage : [{
+				name : "Primal Intuition",
+				note : ["When I make an Animal Handling, Nature or Survival check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			action : ["bonus action", ""],				
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature3.3" : {
+			name : "Totemic Spirit",
+			source : [["GMB:LL", 0]],
+			minlevel : 3,
+			description : desc(['Choose Bear, Eagle, Elk, Wolf, or Tiger Spirit using the "Choose Feature" button above']),
+			choices : ["Bear", "Eagle", "Wolf"],
+			"bear" : {
+				name : "Bear Spirit",
+				description : "\n   " + "While raging, I have resistance to all damage types except psychic",
+				dmgres : [["All -Psychic", "All -Psychic (rage)"]],
+				eval : function() {
+					processResistance(false, 'Barbarian: Rage', ClassList.barbarian.features.rage.dmgres);
+				},
+				removeeval : function() {
+					processResistance(true, 'Barbarian: Rage', ClassList.barbarian.features.rage.dmgres);
+				}
+			},
+			"eagle" : {
+				name : "Eagle Spirit",
+				description : desc(["While raging without heavy armor, others have disadv. on opportunity attacks vs. me",
+				"I can use the Dash action as a bonus action"]),
+				action : ["bonus action", " (Dash)"]
+			},
+			"wolf" : {
+				name : "Wolf Spirit",
+				description : desc(["While raging, friends have advantage on attacks vs. hostiles within 5 ft of me"])
+			}
+		},
+	
+		"subclassfeature5" : {
+			name : "Savage Exploit: Crippling Critical",
+			toNotesPage : [{
+				name : "Crippling Critical",
+				note : ["When I crit, I can reduce a target's movement speed to 0 for 1 minute.",
+				"The target can make a Con save at the start of each of its turn, ending the effect on a succes."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Trampling Rush",
+			toNotesPage : [{
+				name : "Trampling Rush",
+				note : ["When I move at least 20 feet towards a creature and hit them with a melee weapon attack I can expend an Exploit Die to attempt to trample the creature.",
+				"The target must make a Str save. On a failed save, the target is knocked prone and takes bludgeoning damage equal to the Exploit Die roll."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			action : ["bonus action",""],
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature6" : {
+			name : "Totemic Aspect",
+			source : [["GMB:LL", 0]],
+			minlevel : 6,
+			description : "\n   " + 'Choose Bear, Eagle, Elk, Wolf, or Tiger Aspect using the "Choose Feature" button above',
+			choices : ["Bear", "Eagle", "Wolf"],
+			"bear" : {
+				name : "Aspect of the Bear",
+				description : "\n   " + "Advantage on Strength checks to push/pull/lift/break; Carrying capacity is doubled",
+				carryingCapacity : 2
+			},
+			"eagle" : {
+				name : "Aspect of the Eagle",
+				description : "\n   " + "I can see up to 1 mile away perfectly; No disadvantage on Perception from dim light"
+			},
+			"wolf" : {
+				name : "Aspect of the Wolf",
+				description : "\n   " + "I can track while traveling at a fast pace; I can move stealthily at a normal pace"
+			}
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: Savage Defiance",
+			toNotesPage : [{
+				name : "Savage Defiance",
+				note : ["As an action I can expend an Exploit Die to challenge each creature of my choice within 60 feet of me that can hear me.",
+				"Each of these creatures has disadvantage on any attack they make that isn't against until they hit me."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			action : ["reaction",""],
+			source : [["GMB:LL", 0]]	
+		},
+
+		"subclassfeature10" : {
+			name : "Spirit Walker",
+			source : [["GMB:LL", 0]],
+			minlevel : 10,
+			description : desc(["I can cast Commune with Nature as a ritual"]),
+			spellcastingBonus : {
+				name : "Spirit Walker",
+				spells : ["commune with nature"],
+				selection : ["commune with nature"],
+				firstCol : "(R)"
+			},
+			spellChanges : {
+				"commune with nature" : {
+					time : "11 min",
+					changes : "I can cast this spell only as a ritual, thus its casting time is 10 minutes longer."
+				}
+			}
+		},
+
+		"subclassfeature14" : {
+			name : "Totemic Attunement",
+			source : [["GMB:LL", 0]],
+			minlevel : 14,
+			description : desc(['Choose Bear, Eagle, Elk, Wolf, or Tiger Attunement using the "Choose Feature" button']),
+			choices : ["Bear", "Eagle", "Wolf"],
+			"bear" : {
+				name : "Bear Attunement",
+				description : desc(["While raging, any creature that sees me within 5 ft has disadv. on attacks vs. others",
+				"Enemies that can't perceive me or be frightened are immune"])
+			},
+			"eagle" : {
+				name : "Eagle Attunement",
+				description : desc(["While raging, I can fly at my current speed, but I can only stay aloft during my turn"])
+			},
+			"wolf" : {
+				name : "Wolf Attunement",
+				description : desc(["If my melee attack hits while raging, I can knock prone as a bonus action (up to Large)"]),
+				action : ["bonus action", " (raging: knock prone)"]
+			}
+		}
+	}
+});
