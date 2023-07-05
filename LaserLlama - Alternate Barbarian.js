@@ -292,7 +292,7 @@ ClassList["barbarian(laserllama)"] = {
 			"crippling critical (strength 13)" : {
 				name : "Crippling Critical",
 				description : desc(["When I crit, I can reduce a target's movement speed to 0 for 1 minute.",
-									"The target can make a Con save at the start of each of its turn, ending the effect on a succes."]),
+									"The target can make a Con save at the start of each of its turn, ending the effect on a success."]),
 				submenu : "[2nd-degree exploits (level 5+)]",
 				source : ["GMB:LL", 0],
 				prereqeval : function(v) { return What('Str') >= 13;}
@@ -857,7 +857,7 @@ AddSubClass("barbarian(laserllama)", "champion", {
 				name : "Improvised Fighting",
 				description : desc(["I become proficient in improvised weapons.",
 				"When I hit with a nonmagical improvised weapon I can roll the damage dice twice and take the higher roll. Doing so breaks the weapon."]),
-				weaponProfs : [true, true, ["Improvised Weapons"]],
+				weaponProfs : [false, false, ["Improvised Weapons"]],
 				weaponsAdd : ["Improvised Weapons"],
 				source : [["GMB:LL", 0]]
 			},
@@ -1056,7 +1056,7 @@ AddSubClass("barbarian(laserllama)", "totem warrior", {
 			toNotesPage : [{
 				name : "Crippling Critical",
 				note : ["When I crit, I can reduce a target's movement speed to 0 for 1 minute.",
-				"The target can make a Con save at the start of each of its turn, ending the effect on a succes."],
+				"The target can make a Con save at the start of each of its turn, ending the effect on a success."],
 				page3notes : true,							
 				source : [["GMB:LL", 0]]
 				}],
@@ -1109,7 +1109,7 @@ AddSubClass("barbarian(laserllama)", "totem warrior", {
 				source : [["GMB:LL", 0]]
 				}],	
 			minlevel : 9,	
-			action : ["reaction",""],
+			action : ["action",""],
 			source : [["GMB:LL", 0]]	
 		},
 
@@ -1185,7 +1185,7 @@ AddSubClass("barbarian(laserllama)", "ancestral guardian", {
 			source : [["GMB:LL", 0]]
 		},
 		
-		"subclassfeature3.3" : {
+		"subclassfeature3.2" : {
 			name : "Ancestral Protectors",
 			source : [["X", 10]],
 			minlevel : 3,
@@ -1202,7 +1202,7 @@ AddSubClass("barbarian(laserllama)", "ancestral guardian", {
 			toNotesPage : [{
 				name : "Crippling Critical",
 				note : ["When I crit, I can reduce a target's movement speed to 0 for 1 minute.",
-				"The target can make a Con save at the start of each of its turn, ending the effect on a succes."],
+				"The target can make a Con save at the start of each of its turn, ending the effect on a success."],
 				page3notes : true,							
 				source : [["GMB:LL", 0]]
 				}],
@@ -1295,6 +1295,166 @@ AddSubClass("barbarian(laserllama)", "ancestral guardian", {
 			source : [["X", 10]],
 			minlevel : 14,
 			description : "\n   " + "When using Spirit Shield, the attacker takes the reduced amount as force damage"
+		}
+	}
+});
+
+AddSubClass("barbarian(laserllama)", "battlerager", { 
+	regExpSearch : /battlerager/i,
+	subname : "Path of the Battlerager",
+	source : ["GMB:LL", 0],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Crushing Grip",
+			toNotesPage : [{
+				name : "Crushing Grip",
+				note : ["If I expend an Exploit Die on a succesfull grapple:", 
+				"The grappled creature takes bludgeoning damage at the start of each of their turns equal to the roll."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Imposing Presence",
+			toNotesPage : [{
+				name : "Imposing Presence",
+				note : ["When I make an Intimidation check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3.2" : {
+			name : "Savage Smith",
+			source : [["GMB:LL", 0]],
+			minlevel : 3,
+			description : desc(["I gain proficiency in Heavy Armor and Smith's Tools.",
+			"I can Rage in Heavy Armor without any drawbacks."
+			]),
+			toolProfs : [["Smith's Tools"]],
+			armorProfs : [false, false, true, false]
+		},
+
+		"subclassfeature3.3" : {
+			name : "Spiked Armor",
+			source : [["GMB:LL", 0]],
+			minlevel : 3,
+			description : desc([
+				"I gain proficiency with spiked armor both as an armor and as a weapon.",
+				"As a bonus action while raging, I can attack once with my armor spikes.",
+				"With my spiked armor I do piercing damage equal to my Exploit Die when I grapple."
+			]),
+			action : ["bonus action", "Armor Spikes attack (in rage)"],
+			weaponOptions : {
+				regExpSearch : /^(?=.*armou?r)(?=.*spike).*$/i,
+				name : "Armor spikes",
+				source : [["GMB:LL", 0]],
+				ability : 1,
+				type : "armor spikes",
+				damage : [1, "", "piercing"],
+				range : "Melee",
+				abilitytodamage : true
+			},
+			weaponProfs : [false, false, ["armor spikes"]],
+			weaponsAdd : ['Armor Spikes'],			
+			calcChanges : {
+				atkAdd : [
+					function (fields, v) {
+						if (v.theWea.type == "armor spikes") {
+							var aRagerDie = function (n) {return  (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);}(classes.known["barbarian(laserllama)"].level)
+							try {
+								var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
+							} catch (e) {
+								var curDie = 'x';
+							};
+							if (isNaN(curDie) || curDie < aRagerDie) {
+								fields.Damage_Die = '1d' + aRagerDie;
+								fields.Description += (fields.Description ? '; ' : '') + 'When initiating a grapple.';
+							};
+						};
+					}
+				]
+			},
+			eval : function() {
+				AddString('Proficiency Armor Other Description', 'Spiked Armor', ', ');
+			},
+			removeeval : function () {
+				RemoveString('Proficiency Armor Other Description', 'Spiked Armor');
+			}
+		},
+	
+		"subclassfeature5" : {
+			name : "Savage Exploit: Bloodthirsty Critical",
+			toNotesPage : [{
+				name : "Bloodthirsty Critical",
+				note : ["When I crit I can expend an Exploit Die to make an additional weapon attack.",
+						"I cannot use this exploit on a crit achieved by this exploit."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Immovable Stance",
+			toNotesPage : [{
+				name : "Immovable Stance",
+				note : ["As a bonus action I can expend an Exploit Die to plant my feet.",
+				"Until I move, a creature trying to move me or move through my space has to succeed on a Str save to do so."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			action : ["bonus action",""],
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature6" : {
+			name : "Reckless Abandon",
+			source : [["GMB:LL", 0]],
+			minlevel : 6,
+			description : desc(["When I use my reckless attack while raging I also gain temp hp equal to my Exploit Die.", 
+			"I lose this temp hp when my rage ends. I can turn magical armor into spiked armor."
+			]),
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: Savage Defiance",
+			toNotesPage : [{
+				name : "Savage Defiance",
+				note : ["As an action I can expend an Exploit Die to challenge each creature of my choice within 60 feet of me that can hear me.",
+				"Each of these creatures has disadvantage on any attack they make that isn't against until they hit me."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			action : ["action",""],
+			source : [["GMB:LL", 0]]	
+		},
+
+		"subclassfeature10" : {
+			name : "Battlerager Charge",
+			source : [["S", 121]],
+			minlevel : 10,
+			description : desc(["As a bonus action while raging, I can use the Dash action."]),
+			action : ["bonus action", " (in rage)"]
+		},
+
+		"subclassfeature14" : {
+			name : "Spiked Retribution",
+			source : [["GMB:LL", 0]],
+			minlevel : 14,
+			description : desc(["While Raging and wearing Spiked Armor:", 
+			"when I'm hit with a melee attack the attacker takes piercing damage equal to my Str mod.",
+			"I can use my reaction while conscious to replace the damage with my spiked armor attack damage."]),
+			action : ["reaction",""]
 		}
 	}
 });
