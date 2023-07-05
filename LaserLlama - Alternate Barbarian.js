@@ -1676,7 +1676,7 @@ AddSubClass("barbarian(laserllama)", "storm herald", {
 	}
 });
 
-AddSubClass("barbarian", "zealot", {
+AddSubClass("barbarian(laserllama)", "zealot", {
 	regExpSearch : /zealot/i,
 	subname : "Path of the Zealot",
 	source : [["GMB:LL", 11]],
@@ -1824,8 +1824,8 @@ AddSubClass("barbarian", "zealot", {
 	}
 });
 
-AddSubClass("barbarian", "beast", {
-	regExpSearch : /zealot/i,
+AddSubClass("barbarian(laserllama)", "beast", {
+	regExpSearch : /beast/i,
 	subname : "Path of the Beast",
 	source : [["GMB:LL", 0]],
 	features : {
@@ -2016,7 +2016,7 @@ AddSubClass("barbarian", "beast", {
 	}
 });
 
-AddSubClass("barbarian", "wild magic", {
+AddSubClass("barbarian(laserllama)", "wild magic", {
 	regExpSearch : /^(?=.*wild)(?=.*magic).*$/i,
 	subname : "Path of Wild Magic",
 	source : [["GMB:LL", 0]],
@@ -2061,9 +2061,12 @@ AddSubClass("barbarian", "wild magic", {
 			name : "Wild Surge",
 			source : [["GMB:LL", 0]],
 			minlevel : 3,
-			description : desc(["When I rage, I roll on this class' Wild Magic Table (D20).",
+			description :  desc(["When I rage, I roll on this class' Wild Magic Table (D20). (see notes)",
 			"If the rolled effect requires a saving throw, it uses my Exploit Die DC."]),
-			descriptionfull : ["1 - Creatures of your choice that you can see within 30 feet of you must succeed on a Constitution saving throw or take necrotic damage equal to two rolls of your Exploit Die. You then gain temporary hit points equal to two rolls of your Exploit Die + your level",
+			toNotesPage : [{
+				name : "Wild Magic Table",
+				source : [["GMB:LL", ]],
+				note : ["1 - Creatures of your choice that you can see within 30 feet of you must succeed on a Constitution saving throw or take necrotic damage equal to two rolls of your Exploit Die. You then gain temporary hit points equal to two rolls of your Exploit Die + your level",
 			"2 - You teleport up to 30 feet to an unoccupied space you can see. Until the end of your current Rage, you can use this effect again on each of your turns as a bonus action.",
 			"3 - An orb of wild magic explodes at a point that you can see within 30 feet. Creatures within 5 feet must succeed on a Dexterity saving throw or take force damage equal to your Exploit Die. Until the end of your current Rage, you can use a bonus action to cause this effect to happen again.",
 			"4 - Magic infuses one weapon of your choice that you are holding. Until your current Rage, the weapon's damage type changes to force, and it gains the light and thrown properties, with a normal range of 20 feet and a long range of 60 feet. If the magic weapon leaves your hand, it appears in your hand at the end of your turn.",
@@ -2071,7 +2074,7 @@ AddSubClass("barbarian", "wild magic", {
 			"6 - Until the end of your current Rage, you are surrounded by multicolored, protective lights; you, and allied creatures within 10 feet of you, all gain a +1 bonus to your Armor Class.",
 			"7 - Flowers and vines temporarily grow around you; until the end of your current Rage, the ground within 15 feet of you is considered difficult terrain for creatures of your choice.",
 			"8 - Roll another d20. On an even roll, your size grows by one category as if by the enlarge part of the enlarge/reduce spell. On an odd roll, your size is reduced by one category as if by the reduce part of the enlarge/reduce spell.",
-			"9 - You can't speak for duration of your current Rage. Whenever you try, a small bird flies out of your mouth and flies toward the sun.",
+			"9 - Youa can't speak for duration of your current Rage. Whenever you try, a small bird flies out of your mouth and flies toward the sun.",
 			"10 - You are transported to the Astral Plane until the end of your next turn, after which time you return to the space you previously occupied or the nearest unoccupied space.",
 			"11 - For the duration of your current Rage, you gain resistance to the last instance of damage you took, until you take another instance of damage. For example, if you take fire damage from a red dragon's fire breath, you are resistant to fire damage until you take another type of damage.",
 			"12 - For the duration of your current Rage, every hair on your body grows by one foot at the end of each of your turns. When your current Rage ends, all of your hair falls out.",
@@ -2083,6 +2086,7 @@ AddSubClass("barbarian", "wild magic", {
 			"18 - Your muscles are engorged with wild magic. For the duration of your current Rage, all creatures have disadvantage on any saving throws to resist the effects of your Exploits.",
 			"19 - For the duration of your current Rage, the distance of your long and high jumps is tripled, even if this extra distance would exceed your remaining movement.",
 			"20 - You instantly regain all expended uses of your Rage."],
+			}]
 		},
 
 		"subclassfeature5" : {
@@ -2154,7 +2158,7 @@ AddSubClass("barbarian", "wild magic", {
 			]),
 			action : [["reaction", " (in rage on damage/save fail)"]]
 		},
-		
+
 		"subclassfeature14" : {
 			name : "Controlled Surge",
 			source : [["T", 26]],
