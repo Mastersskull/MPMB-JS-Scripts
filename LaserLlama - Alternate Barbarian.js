@@ -1006,8 +1006,7 @@ AddSubClass("barbarian(laserllama)", "totem warrior", {
 				page3notes : true,				
 				source : [["GMB:LL", 0]]
 			}],
-			minlevel : 3,
-			action : ["bonus action", ""],				
+			minlevel : 3,		
 			source : [["GMB:LL", 0]]
 		},
 		
@@ -1019,8 +1018,7 @@ AddSubClass("barbarian(laserllama)", "totem warrior", {
 				page3notes : true,				
 				source : [["GMB:LL", 0]]
 			}],
-			minlevel : 3,
-			action : ["bonus action", ""],				
+			minlevel : 3,		
 			source : [["GMB:LL", 0]]
 		},
 
@@ -1153,6 +1151,150 @@ AddSubClass("barbarian(laserllama)", "totem warrior", {
 				description : desc(["If my melee attack hits while raging, I can knock prone as a bonus action (up to Large)"]),
 				action : ["bonus action", " (raging: knock prone)"]
 			}
+		}
+	}
+});
+
+AddSubClass("barbarian(laserllama)", "ancestral guardian", { 
+	regExpSearch : /^(?=.*ancestral)(?=.*guardian).*$/i,
+	subname : "Path of the Ancestral Guardian",
+	source : ["GMB:LL", 0],
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Heroic Fortitude",
+			toNotesPage : [{
+				name : "Heroic Fortitude",
+				note : ["When I make a Str/Dex/Con save, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Primal Intuition",
+			toNotesPage : [{
+				name : "Primal Intuition",
+				note : ["When I make an Animal Handling, Nature or Survival check, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],			
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,		
+			source : [["GMB:LL", 0]]
+		},
+		
+		"subclassfeature3.3" : {
+			name : "Ancestral Protectors",
+			source : [["X", 10]],
+			minlevel : 3,
+			description : desc([
+				"While raging, the first creature I hit with an attack on my turn becomes distracted",
+				"While distracted, it has disadvantage on attack rolls that don't target me",
+				"In addition, everybody but me counts as having resistance to all of the target's attacks",
+				"This lasts until the start of my next turn, or until my rage ends"
+			])
+		},
+	
+		"subclassfeature5" : {
+			name : "Savage Exploit: Crippling Critical",
+			toNotesPage : [{
+				name : "Crippling Critical",
+				note : ["When I crit, I can reduce a target's movement speed to 0 for 1 minute.",
+				"The target can make a Con save at the start of each of its turn, ending the effect on a succes."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Greater Hurl",
+			toNotesPage : [{
+				name : "Greater Hurl",
+				note : ["As an action force a creature smaller than me within range to make a Str save.",
+				"On a failed save the target is thrown towards a point I can see within 30 feet.",
+				"If they land in an unoccupied space that can't support their weight they take fall damage and fall prone.",
+				"If they hit another creature, that creature must make a Dex save or take bludgeoning damage equal to the Exploit Die roll + my Str mod.",
+				"Counting as 1 size larger for carrying or grappling works for this exploit."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			action : ["action",""],
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature6" : {
+			name : "Spirit Shield",
+			source : [["X", 10]],
+			minlevel : 6,
+			description : desc([
+				"As a reaction while raging when an ally I see within 30 ft is damaged, I can reduce it.",
+				"My guardian spirits reduce the damage by an amount equal to the roll of an Exploit Die.",
+				"While Raging I can reduce the damage by an amount equal to the roll of two Exploit Die."
+			]),
+			action : ["reaction", ""]
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: Resilient Body",
+			toNotesPage : [{
+				name : "Resilient Body",
+				note : ["When I take damage and can see the source I can expend an Exploit die to reduce the damage taken by twice the roll + my Con mod.",
+				"If I rolled higher than the damage I took, I gain temp hp equal to the difference in values."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			action : ["reaction",""],
+			source : [["GMB:LL", 0]]	
+		},
+
+		"subclassfeature10" : {
+			name : "Consult the Spirits",
+			source : [["X", 10]],
+			minlevel : 10,
+			description : desc([
+				"I can cast either Clairvoyance or Augury, without a spell slot or material components",
+				"Augury consults ancestral spirits; Clairvoyance summons an invisible ancestral spirit",
+				"Wisdom is my spellcasting ability for these spells"
+			]),
+			spellcastingAbility : 5,
+			spellcastingBonus : [{
+				name : "Consult the Spirits",
+				spells : ["augury"],
+				selection : ["augury"],
+				firstCol : 'oncesr'
+			}, {
+				name : "Consult the Spirits",
+				spells : ["clairvoyance"],
+				selection : ["clairvoyance"],
+				firstCol : 'oncesr'
+			}],
+			usages : 1,
+			recovery : "short rest",
+			spellChanges : {
+				"augury" : {
+					components : "V,S",
+					compMaterial : "",
+					description : "Omen about specific course of action I plan to take in the next 30 min",
+					changes : "My casting of Augury is a practice of consulting my ancestral spirits, thus requiring no material components."
+				},
+				"clairvoyance" : {
+					components : "V,S",
+					compMaterial : "",
+					changes : "My casting of Clairvoyance is a practice of consulting my an ancestral spirit of mine, thus requiring no material components."
+				}
+			}
+		},
+		"subclassfeature14" : {
+			name : "Vengeful Ancestors",
+			source : [["X", 10]],
+			minlevel : 14,
+			description : "\n   " + "When using Spirit Shield, the attacker takes the reduced amount as force damage"
 		}
 	}
 });
