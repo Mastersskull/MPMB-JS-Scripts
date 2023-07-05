@@ -1675,3 +1675,152 @@ AddSubClass("barbarian(laserllama)", "storm herald", {
 		}
 	}
 });
+
+AddSubClass("barbarian", "zealot", {
+	regExpSearch : /zealot/i,
+	subname : "Path of the Zealot",
+	source : [["X", 11]],
+	fullname : "Zealot",
+	features : {
+
+		"subclassfeature3" : {
+			name : "Savage Exploit: Feat of Strength",
+			toNotesPage : [{
+				name : "Feat of Strength",
+				note : ["When I make a Str or Con related check/save, I can expend an Exploit Die and add it to the result before knowing if it succeeds."],
+				page3notes : true,			
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			source : [["GMB:LL", 0]]
+		},	
+		
+		"subclassfeature3.1" : {
+			name : "Savage Exploit: Menacing Shout",
+			toNotesPage : [{
+				name : "Menacing Shout",
+				note : ["As a bonus action I can expend an Exploit Die and force a creature within 30 feet to make a wisdom save. On a failed save the creature is frightened for 1 minute. It can repeat the saving throw at the end of each of its turns. The effect ends early if the creature succeed any of these saves or takes any damage."],				
+				page3notes : true,				
+				source : [["GMB:LL", 0]]
+			}],
+			minlevel : 3,
+			action : ["bonus action", ""],				
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature3.2" : {
+			name : "Divine Fury",
+			source : [["X", 11]],
+			minlevel : 3,
+			description : desc([
+				"While raging, the first creature I hit with a weapon attack in my turn gets extra damage",
+				'Select your alignment using the "Choose Feature" button above'
+			]),
+			choices : ["Evil", "Neutral" ,"Good"],
+			"evil" : {
+				name : "Divine Fury",
+				description : desc([
+					"While raging, the first creature I hit with a weapon attack in my turn gets extra damage",
+					"It takes my Exploit Die worth of necrotic damage"
+				]),
+			},
+			"neutral" : {
+				name : "Divine Fury",
+				description : desc([
+					"While raging, the first creature I hit with a weapon attack in my turn gets extra damage",
+					"It takes my Exploit Die worth of thunder damage"
+				]),
+			},
+			"good" : {
+				name : "Divine Fury",
+				description : desc([
+					"While raging, the first creature I hit with a weapon attack in my turn gets extra damage",
+					"It takes my Exploit Die worth of radiant damage"
+				]),
+			}
+		},
+		"subclassfeature3.1" : {
+			name : "Warrior of the Gods",
+			source : [["X", 11]],
+			minlevel : 3,
+			description : desc(["Spells restoring me to life (not undeath or anything else) don't require material comp."])
+		},
+
+		"subclassfeature5" : {
+			name : "Savage Exploit: Savage Rebuke",
+			toNotesPage : [{
+				name : "Savage Rebuke",
+				note : ["When a creature hits me with a melee attack I can expend an Exploit Die to make 1 melee weapon attack back."],		
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,					
+			source : [["GMB:LL", 0]]
+		},
+
+		"subclassfeature5.1" : {
+			name : "Savage Exploit: Thunderous Blow",
+			toNotesPage : [{
+				name : "Thunderous Blow",
+				note : ["When I hit a creature with a melee weapon attack I can expend an Exploit Die to force them to make a Str save.",
+				"On a failed save the target takes bludgeoning damage equal to the Exploit Die roll and is pushed away [5 x Str mod] feet.",
+				"Creatures larger than me has advantage on the save."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],
+			minlevel : 5,
+			source : [["GMB:LL", 0]]		
+		},
+
+		"subclassfeature6" : {
+			name : "Fanatical Focus",
+			source : [["X", 11]],
+			minlevel : 6,
+			description : desc([
+				"When I fail a saving throw while raging, I can reroll it and must use the new roll",
+				"I can use this ability only once per rage"
+			]),
+			usages : 1,
+			recovery : "rage"
+		},
+
+		"subclassfeature9" : {
+			name : "Savage Exploit: War Cry",
+			toNotesPage : [{
+				name : "War Cry",
+				note : ["As an action I can expend an Exploit Die to force any hostile creature within a 30ft cone of me to make a Wis save.",
+				"On a failed save the creature drop what it is holding and becomes frightened of me for 1 minute.",
+				"Affected creatures can attempt the save again at the end of their turn when they don't have line of sight on me, ending the effect on a succes."],
+				page3notes : true,							
+				source : [["GMB:LL", 0]]
+				}],	
+			minlevel : 9,	
+			action : ["action",""],
+			source : [["GMB:LL", 0]]	
+		},
+		"subclassfeature10" : {
+			name : "Zealous Presence",
+			source : [["X", 11]],
+			minlevel : 10,
+			description : desc([
+				"As a bonus action, I choose up to 10 creatures within 60 ft that can hear my battle cry",
+				"These creatures gain adv. on attacks and saves until the start of my next turn"
+			]),
+			usages : 1,
+			recovery : "long rest",
+			action : ["bonus action", ""]
+		},
+
+		"subclassfeature14" : {
+			name : "Rage Beyond Death",
+			source : [["GMB:LL", 0]],
+			minlevel : 14,
+			description : desc([
+				"While raging, having 0 hit points doesn't knock me unconscious.",
+				"I still must make death saves, and I suffer the normal effects of taking damage.",
+				"After 3 failed death saves, I must succeed on a Con save every turn to maintain my Rage.",
+				"The save is DC 10, adding 5 for each additional turn. I die if I'm still at 0 hp after this."
+			])
+		}
+	}
+});
