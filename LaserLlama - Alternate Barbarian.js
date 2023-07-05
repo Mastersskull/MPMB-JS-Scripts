@@ -536,11 +536,11 @@ ClassList["barbarian(laserllama)"] = {
 			minlevel : 9,
 			description : levels.map(function(n) {
 				if (n < 13) {
-					var descr = ["I now crit on rolling a 19 or higher."];
+					var descr = ["My attacks crit on rolling a 19 or higher."];
 				} else if (n > 12 && n <17){
-					var descr = ["I now crit on rolling an 18 or higher."];
+					var descr = ["My attacks crit on rolling an 18 or higher."];
 				} else {
-					var descr = ["I now crit on rolling a 17 or higher."];
+					var descr = ["My attacks crit on rolling a 17 or higher."];
 				}
 				return desc(descr);
 			  }),
@@ -793,8 +793,8 @@ AddSubClass("barbarian(laserllama)", "brute", {
 		"subclassfeature14" : {
 			name : "Brutish Determination",
 			description : desc(["I can add 1d4 to Str/Dex/Con and death saves.",
-			"Rolling a 20 or higher on my death saves lets me stand up instantly with 1hp."],
-			"my unarmes strikes become 1d8 (1d10 when both hands are free)."),
+			"Rolling a 20 or higher on my death saves lets me stand up instantly with 1hp.",
+			"My Unarmed Strikes become 1d8 (1d10 when both hands are free)."]),
 			minlevel : 14,
 			source : [["GMB:LL", 0]],
 		}
