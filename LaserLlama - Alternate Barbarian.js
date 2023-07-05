@@ -757,7 +757,8 @@ AddSubClass("barbarian(laserllama)", "brute", {
 			description : desc(["When I hit a creature I can use concussive blow without expending an Exploit Die an amount of times equal to my Con mod."],
 			"While raging, my weapons count as magical for the purpose of overcoming resistances and immunities to nonmagical damage."),
 			minlevel : 6,
-			usages : "Con mod per",
+			usages : "Con mod per ",
+			usagescalc : "event.value = Math.max(1, What('Con Mod'));",
 			recovery : "long rest",
 			source : [["GMB:LL", 0]]
 		},
