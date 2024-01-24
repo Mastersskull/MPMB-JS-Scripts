@@ -34,7 +34,7 @@ AddSubClass("barbarian(laserllama)", "packleader", {
 			source : [["GMB:LL", 0]],
 			minlevel : 3,
 			description : desc(["I gain proficiency with Animal Handling",
-								"Wisdom (Animal Handling) check related to wild animals get a bonus to the roll equal to a roll of Exploit Die."
+								"Wisdom (Animal Handling) checks related to wild animals get a bonus to the roll equal to a roll of Exploit Die."
 							]),
 			skills : ["Animal Handling"]
 		},
@@ -201,7 +201,7 @@ AddSubClass("barbarian(laserllama)", "packleader", {
 				name : "Pack Tactics",
 				note :["As a bonus action, expend an Exploit Die to signal my allies until the end of my next turn",
 						"Creatures of my choice that can see or hear me within 30 feet have advantage on attack rolls, so long as a conscious allied creature is within 5 feet of their target.",
-						"This effect can last up to 1 minute if I expend my bonus action to extend it"],
+						"This effect can last up to 1 minute if I expend my bonus action to extend it each turn"],
 				page3notes : true,							
 				source : [["GMB:LL", 0]]
 				}],	
