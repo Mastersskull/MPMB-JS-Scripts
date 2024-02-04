@@ -38,6 +38,7 @@ var FightingStyles = {
 			]
 		}
 	},
+
 	brawler: {
 		name : "Brawler Fighting Style",
 		description : desc([
@@ -56,6 +57,29 @@ var FightingStyles = {
 		},
 		action : ['bonus action', '']
 	},
+
+	classical : {
+		name : "Classical Swordplay Fighting Style",
+		description : desc("+2 bonus to attack rolls and +1 to AC when wielding a finesse weapon and no other weapon, heavy armor nor shield"),
+		calcChanges : {
+			atkCalc : [
+				function (fields, v, output) {
+					for (var i = 1; i <= FieldNumbers.actions; i++) {
+						if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) return;
+					};
+					if ((/\bfinesse\b/i).test(fields.Description)) output.extraDmg += 2;
+				},
+				"When I'm wielding a finesse weapon in one hand and no weapon nor shield in my other hand, I do +2 damage with that melee weapon. This condition will always be false if the bonus action 'Off-hand Attack' exists."
+			]
+		},
+		extraAC : {
+			name : "Classical Swordplay Fighting Style", // necessary for features referring to fighting style properties directly
+			mod : 1,
+			text : "I gain a +1 bonus to AC when wielding a finesse weapon and no other weapon, heavy armor nor shield.",
+			stopeval : function (v) { return v.heavyArmor || v.usingShield; }
+		}
+	},
+
 	defense : {
 		name : "Defense Fighting Style",
 		description : desc("+1 bonus to AC when I'm wearing armor or wielding a shield"),
@@ -66,6 +90,7 @@ var FightingStyles = {
 			stopeval : function (v) { return !v.wearingArmor && !v.usingShield; }
 		}
 	},
+
 	dueling : {
 		name : "Dueling Fighting Style",
 		description : desc("+2 to damage rolls when wielding a melee weapon in one hand and no other weapons"),
@@ -81,31 +106,13 @@ var FightingStyles = {
 			]
 		}
 	},
-	great_weapon : {
-		name : "Great Weapon Fighting Style",
-		description : desc("Reroll 1 or 2 on damage if wielding two-handed/versatile melee weapon in both hands"),
-		calcChanges : {
-			atkAdd : [
-				function (fields, v) {
-					if (v.isMeleeWeapon && (/(\bversatile|((^|[^+-]\b)2|\btwo).?hand(ed)?s?)\b/i).test(fields.Description)) {
-						fields.Description += (fields.Description ? '; ' : '') + 'Re-roll 1 or 2 on damage die' + ((/versatile/i).test(fields.Description) ? ' when two-handed' : '');
-					}
-				},
-				"While wielding a two-handed or versatile melee weapon in two hands, I can re-roll a 1 or 2 on any damage die once."
-			]
-		}
-	},
-	protection : {
-		name : "Protection Fighting Style",
+
+	dual_wielding : {
+		name : "Dual Wielding Fighting Style",
 		description : desc([
-			"As a reaction, I can give disadv. on an attack made vs. someone within 5 ft of me",
-			"I need to be wielding a shield and be able to see the attacker to do this"
-		]),
-		action : ["reaction", ""]
-	},
-	two_weapon : {
-		name : "Two-Weapon Fighting Style",
-		description : desc("I can add my ability modifier to the damage of my off-hand attacks"),
+					"I can add make an additional attack when two-weapon fighting as part of my attack action",
+					"I can add my ability modifier to the damage of my off-hand attacks"
+							]),
 		calcChanges : {
 			atkCalc : [
 				function (fields, v, output) {
@@ -113,7 +120,133 @@ var FightingStyles = {
 				},
 				"When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks. If a melee weapon includes 'off-hand' or 'secondary' in its name or description, it is considered an off-hand attack."
 			]
+		}//,
+		//action : levels.map(function (n) { return n < 5 ? ["action",""] : n < 10 ? ["action","bla"] : ["action","lorem"] }) // doesn't work atm
+	},
+
+	featherweight : {
+		name : "Featherweight Fighting Style",
+		description : desc("+1 bonus to damage rolls and +10 ft to speed when wielding only light weapons and not wearing medium or heavy armor nor shield"),
+		calcChanges : {
+			atkCalc : [
+				function (fields, v, output) {
+					for (var i = 1; i <= FieldNumbers.actions; i++) {
+						if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) return;
+					};
+					if ((/\blight\b/i).test(fields.Description)) output.extraDmg += 1;
+				},
+				"When I'm wielding light weapons and not wearing medium or heavy armor nor a shield, I do +1 damage with light weapons."
+			]
 		}
+		// TODO: Add speed change
+	},
+
+	great_weapon : {
+		name : "Great Weapon Fighting Style",
+		description : desc([
+				"While wielding a heavy melee weapon in two hands and making an attack with my action,",
+				"I treat total damage dice rolls lower than 5 as 6"
+			]),
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (v.isMeleeWeapon && (/\bheavy\b/i).test(fields.Description)) {
+						fields.Description += (fields.Description ? '; ' : '') + 'Treat total damage dice rolls lower than 5 as 6';
+					}
+				},
+				"While wielding a heavy melee weapon in two hands and making an attack with my action, I treat total damage dice rolls lower than 5 as 6"
+			]
+		}
+	},
+
+	improvised : {
+		name : "Improvised Fighting Style",
+		description : desc([
+				"I am proficient with improvised weapons,",
+				"I can reroll damage once per turn but it destroys non-magical objects"
+			]),
+		weaponProfs : [false, false, ["Improvised weapons"]]
+	},
+
+	marksman : {
+		name : "Melee Marksman Fighting Style",
+		description : desc([
+			"I don't suffer disadv. on ranged attack rolls for being within 5 ft of a hostile creature",
+			"When I make a ranged attack in my Attack action against a creature within 5 ft, I can use a bonus action to make a melee attack with my ranged weapon"
+		]),
+		weaponOptions : {
+			regExpSearch : /(ranged|melee|marksman)/i,
+			name : "Ranged weapon melee attack",
+			source : [["P", 168]],
+			ability : 1,
+			type : "ranged weapon melee attack",
+			damage : [1, 4, "bludgeoning"],
+			range : "Melee",
+			list: "melee",
+			description : "As bonus action after Attack action with ranged weapon",
+			abilitytodamage : true
+		},
+		weaponsAdd : ["Ranged weapon melee attack"],
+		action : ["bonus action", "Melee Marksman attack (with Attack action)"],
+		weaponProfs : [false, false, ["ranged weapon melee attack"]]
+	},
+
+	protector : {
+		name : "Protector Fighting Style",
+		description : desc([
+			"As a reaction, I can add my prof bonus to AC against an attack made vs. me or someone within 5 ft of me",
+			"I need to be wielding a shield or a melee weapon to do this"
+		]),
+		action : ["reaction", ""]
+	},
+
+	strongbow : {
+		name : "Strongbow Fighting Style",
+		description : desc("I can use Strength for ranged attacks with longbows and shortbows, +1 damage when I do"),
+		calcChanges : {
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isRangedWeapon && (v.WeaponName == "shortbow" || v.baseWeaponName == "shortbow" || v.WeaponName == "longbow" || v.baseWeaponName == "longbow")) {
+						fields.Mod = 1;
+						output.extraDmg += 1;
+					}
+				},
+				"Strength-based attacks with longbows and shortbows get a +1 bonus damage"
+			]
+		}
+	},
+
+	thrown : {
+		name : "Thrown Weapon Fighting Style",
+		description : desc("+2 bonus to damage rolls with thrown weapons as ranged attack"),
+		calcChanges : {
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isThrownWeapon) output.extraDmg += 2;
+				},
+				"My thrown weapons get a +2 bonus damage when thrown."
+			]
+		}
+	},
+
+	versatile : {
+		name : "Versatile Fighting Style",
+		description : desc([
+				"+1 bonus to attack rolls when wielding a single versatile weapon and no shield",
+				"When attacking with it, I can take a bonus action to grapple, shove or use an object"
+			]),
+		calcChanges : {
+			atkCalc : [
+				function (fields, v, output) {
+					for (var i = 1; i <= FieldNumbers.actions; i++) {
+						if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) return;
+					};
+					if ((/\bversatile\b/i).test(fields.Description)) output.extraDmg += 1;
+				},
+				"My thrown weapons get a +2 bonus damage when thrown."
+			]
+		},
+		action : ["bonus action", "Grapple, shove or use an object (with Attack action)"]
 	}
 };
 
@@ -155,19 +288,27 @@ ClassList["fighter(laserllama)"] = {
 	features: {
 
 		"fighting style" : {
-				name : "Fighting Style",
-				source : [["SRD", 24], ["P", 72]],
-				minlevel : 1,
-				description : desc('Choose a Fighting Style for the fighter using the "Choose Feature" button above'),
-				choices : ["Archery", "Brawler", "Defense", "Dueling", "Great Weapon Fighting", "Protection", "Two-Weapon Fighting"],
-				"archery" : FightingStyles.archery,
-				"brawler": FightingStyles.brawler,
-				"defense" : FightingStyles.defense,
-				"dueling" : FightingStyles.dueling,
-				"great weapon fighting" : FightingStyles.great_weapon,
-				"protection" : FightingStyles.protection,
-				"two-weapon fighting" : FightingStyles.two_weapon
-			},
+			name : "Fighting Style",
+			source : [["SRD", 24], ["P", 72]],
+			minlevel : 1,
+			description : desc('Choose a Fighting Style for the fighter using the "Choose Feature" button above'),
+			choices : ["Archery", "Brawler", "Classical Swordplay", "Defense", "Dueling", "Dual Wielding", "Featherweight Fighting","Great Weapon Fighting", 
+						"Improvised Fighting", "Melee Marksman", "Protector", "Strongbow", "Thrown Weapon Fighting", "Versatile Fighting"],
+			"archery" : FightingStyles.archery,
+			"classical swordplay" : FightingStyles.classical,
+			"brawler": FightingStyles.brawler,
+			"defense" : FightingStyles.defense,
+			"dueling" : FightingStyles.dueling,
+			"dual wielding" : FightingStyles.dual_wielding,
+			"featherweight fighting" : FightingStyles.featherweight,
+			"great weapon fighting" : FightingStyles.great_weapon,
+			"improvised fighting" : FightingStyles.improvised,
+			"melee marksman" : FightingStyles.marksman,
+			"protector" : FightingStyles.protector,
+			"strongbow" : FightingStyles.strongbow,
+			"thrown weapon fighting" : FightingStyles.thrown,
+			"versatile fighting" : FightingStyles.versatile
+		},
 
 		"second wind" : {
 			name : "Second Wind",
