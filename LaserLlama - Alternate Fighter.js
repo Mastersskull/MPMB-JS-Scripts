@@ -5,7 +5,7 @@
     -KEEP IN MIND-
     It is recommended to enter the code in a fresh sheet before adding any other information (i.e. before making your character with it).
 	
-	-INFORMATION-
+    -INFORMATION-
     Subject:    Alternate Fighter
 
     Effect:     This script adds the Alternate Fighter class published by Laserllama in GM Binder under the Fan Content policy.
