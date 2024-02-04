@@ -241,9 +241,9 @@ var FightingStyles = {
 					for (var i = 1; i <= FieldNumbers.actions; i++) {
 						if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) return;
 					};
-					if ((/\bversatile\b/i).test(fields.Description)) output.extraDmg += 1;
+					if ((/\bversatile\b/i).test(fields.Description)) output.extraHit += 1;
 				},
-				"My thrown weapons get a +2 bonus damage when thrown."
+				"I get a +1 bonus to attack rolls when wielding a single versatile weapon and no shield"
 			]
 		},
 		action : ["bonus action", "Grapple, shove or use an object (with Attack action)"]
@@ -289,7 +289,7 @@ ClassList["fighter(laserllama)"] = {
 
 		"fighting style" : {
 			name : "Fighting Style",
-			source : [["SRD", 24], ["P", 72]],
+			source : [["GMB:LL", 0]],
 			minlevel : 1,
 			description : desc('Choose a Fighting Style for the fighter using the "Choose Feature" button above'),
 			choices : ["Archery", "Brawler", "Classical Swordplay", "Defense", "Dueling", "Dual Wielding", "Featherweight Fighting","Great Weapon Fighting", 
