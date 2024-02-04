@@ -151,9 +151,21 @@ ClassList["fighter(laserllama)"] = {
 			name : "Know Your Enemy",
 			source : [["GMB:LL", 0]],
 			minlevel : 3,
-			description : desc(["If I spend an action studying someone, the DM will tell me info about them",
-				"I cannot use this twice on the same creature before completing a short rest"
-			])
+			description : levels.map(function (n) {
+				if (n < 14) {
+					var descr = [
+						"If I spend an action studying someone, the DM will tell me info about them",
+						"I cannot use this twice on the same creature before completing a short rest"
+					];
+				} else {
+					var descr = [
+						"If I spend an action studying someone, the DM will tell me info about them",
+						"I can also use this once per turn if I hit with a weapon attack",
+						"I cannot use this more than three times on the same creature before completing a short rest"
+					];
+				}
+				return desc(descr);
+			})
 		},
 
 		"subclassfeature3" : {
