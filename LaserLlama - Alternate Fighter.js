@@ -204,10 +204,17 @@ var FightingStyles = {
 		name : "Strongbow Fighting Style",
 		description : desc("I can use Strength for ranged attacks with longbows and shortbows, +1 damage when I do"),
 		calcChanges : {
-			atkCalc : [
+			atkAdd : [
 				function (fields, v, output) {
 					if (v.isRangedWeapon && (v.WeaponName == "shortbow" || v.baseWeaponName == "shortbow" || v.WeaponName == "longbow" || v.baseWeaponName == "longbow")) {
 						fields.Mod = 1;
+					}
+				},
+				"Strength-based attacks with longbows and shortbows get a +1 bonus damage"
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isRangedWeapon && (v.WeaponName == "shortbow" || v.baseWeaponName == "shortbow" || v.WeaponName == "longbow" || v.baseWeaponName == "longbow")) {
 						output.extraDmg += 1;
 					}
 				},
