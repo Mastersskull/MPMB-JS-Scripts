@@ -583,6 +583,16 @@ ClassList["fighter(laserllama)"] = {
 
 }
 
+// Feats
+FeatsList["alternate defensive duelist"] = {
+	name : "Alternate Defensive Duelist",
+	source : [["GMB:LL"]],
+	descriptionFull : "When a creature you can see hits you with a melee attack while you are wielding a finesse weapon you are proficient with, you can use a reaction to add your Dexterity modifier (minimum of +1) to your Armor Class against that attack. If this bonus to your Armor Class would cause the attack to miss, you can make an attack with that finesse weapon against the attacker as part of the same reaction.",
+	description : "When wielding a finesse weapon with which I am proficient and another creature hits me with a melee attack, I can use my reaction to add my Dexterity modifier to my AC for that attack. If this causes the attack to miss me, I can make an attack with it as part of the reaction.",
+	prerequisite : "Dexterity 13 or higher",
+	prereqeval : function(v) { return What('Dex') >= 13; },
+	action : ["reaction", " (when hit in melee)"]
+};
 
 // Source information
 SourceList["GMB:LL"] = {
