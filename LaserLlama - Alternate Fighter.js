@@ -120,8 +120,8 @@ var FightingStyles = {
 				},
 				"When engaging in two-weapon fighting, I can add my ability modifier to the damage of my off-hand attacks. If a melee weapon includes 'off-hand' or 'secondary' in its name or description, it is considered an off-hand attack."
 			]
-		}//,
-		//action : levels.map(function (n) { return n < 5 ? ["action",""] : n < 10 ? ["action","bla"] : ["action","lorem"] }) // doesn't work atm
+		},
+		action : ["action","Dual Wielding (one additional attack)"]
 	},
 
 	featherweight : {
@@ -137,8 +137,10 @@ var FightingStyles = {
 				},
 				"When I'm wielding light weapons and not wearing medium or heavy armor nor a shield, I do +1 damage with light weapons."
 			]
+		},
+		speed : {
+			allModes : "+10"
 		}
-		// TODO: Add speed change
 	},
 
 	great_weapon : {
@@ -254,6 +256,148 @@ var FightingStyles = {
 			]
 		},
 		action : ["bonus action", "Grapple, shove or use an object (with Attack action)"]
+	},
+
+	// Fighting styles from expanded alternate fighter
+	blind : {
+		name : "Blind Warrior Fighting Style",
+		description : desc([
+							"I gain blindsight for a range of 5 times my prof bonus",
+							"In that range, I can see invisible creatures and anything that isn't behind total cover or hidden"
+						]),
+		vision : [["Blindsight", 10]]
+		// TODO: try to add the scaling
+	},
+
+	heavyweight : {
+		name : "Heavyweight Fighting Style",
+		description : desc("+1 damage to damage rolls and adv. on Strength (Athletics) checks to shove when wielding a heavy melee weapon"),
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (v.isMeleeWeapon && (/\bheavy\b/i).test(fields.Description)) {
+						fields.Description += (fields.Description ? '; ' : '') + 'Adv. on Strength (Athletics) checks to shove';
+					}
+				},
+				"While wielding a heavy melee weapon, I get +1 to damage rolls and adv. on Strength (Athletics) checks to shove"
+			],
+			atkCalc : [
+				function (fields, v, output) {
+					if (v.isMeleeWeapon && (/\bheavy\b/i).test(fields.Description)) {
+						output.extraDmg += 1;
+					}
+				},
+				"While wielding a heavy melee weapon, I get +1 to damage rolls and adv. on Strength (Athletics) checks to shove"
+			]
+		}
+	},
+
+	mariner : {
+		name : "Mariner Fighting Style",
+		description : desc("+1 bonus to AC and swimming speed when not wearing medium or heavy armor nor shield"),
+		extraAC : {
+			name : "Mariner Fighting Style",
+			mod : 1,
+			text : "I gain a +1 bonus to AC when not wearing medium or heavy armor nor shield.",
+			stopeval : function (v) { return v.mediumArmor || v.heavyArmor || v.usingShield; }
+		},
+		speed : {
+			swim : { spd : "walk", enc : 0 }
+		}
+	},
+
+	mountaineer : {
+		name : "Mountaineer Fighting Style",
+		description : desc("+1 bonus to AC and climbing speed when not wearing medium or heavy armor nor shield"),
+		extraAC : {
+			name : "Mountaineer Fighting Style",
+			mod : 1,
+			text : "I gain a +1 bonus to AC when not wearing medium or heavy armor nor shield.",
+			stopeval : function (v) { return v.mediumArmor || v.heavyArmor || v.usingShield; }
+		},
+		speed : {
+			climb : { spd : "walk", enc : 0 }
+		}
+	},
+
+	mounted : {
+		name : "Mounted Warrior Fighting Style",
+		description : desc("+1 bonus to AC to me and my mount when riding, I can use my bonus action to command"),
+		extraAC : {
+			name : "Mounted Warrior Fighting Style",
+			mod : 1,
+			text : "I gain a +1 bonus to AC when riding a controlled mount"
+		},
+		action : ["bonus action", " (command)"]
+	},
+	// TODO: figure out if it is possible to edit the mount page
+
+	pit : {
+		name : "Pit Fighting Style",
+		description : desc([
+				"Tridents deal 1d8 (1d10) piercing damage on hit",
+				"Attacks with nets only replace one attack, melee attacks don't have disadv."
+			]),
+		calcChanges : {
+			atkAdd : [
+				function (fields, v) {
+					if (v.WeaponName == "net" || v.baseWeaponName == "net") {
+						fields.Description = "Thrown, no disadv. in melee, up to large creature hit is restrained"
+					}
+
+					if ((v.WeaponName == "trident" || v.baseWeaponName == "trident") && (fields.Damage_Die == "1d4" || fields.Damage_Die == "1d6")) {
+						fields.Damage_Die = "1d8";
+						fields.Description = "Thrown, versatile (1d10)";
+					}
+				},
+				"Nets attack only replace one attack, no disadv. in melee and my tridents deal 1d8 (1d10) damage"
+			]
+		}
+	},
+
+	shieldwarrior : {
+		name : "Shield Warrior Fighting Style",
+		description : desc([
+							"+1 bonus to AC when I'm wielding a shield and nothing else",
+							"I gain prof. with shields as martial melee weapon, 2d4 bludg. on hit"
+						]),
+		extraAC : {
+			name : "Shield Warrior Fighting Style",
+			mod : 1,
+			text : "I gain a +1 bonus to AC while wielding a shield and nothing else.",
+			stopeval : function (v) { return !v.usingShield; }
+		},
+		weaponOptions : {
+			regExpSearch : /(shield|bash)/i,
+			name : "Shield melee attack",
+			ability : 1,
+			type : "shield melee attack",
+			damage : [2, 4, "bludgeoning"],
+			range : "Melee",
+			list: "melee",
+			abilitytodamage : true
+		},
+		weaponsAdd : ["Shield melee attack"],
+		weaponProfs : [false, false, ["shield melee attack"]]
+	},
+
+
+	standardbearer : {
+		name : "Standard Bearer Fighting Style",
+		description : desc([
+			"As a reaction, I can give adv. to an attack made by someone within 5 ft of me",
+			"I need to be wielding a standard or banner to do this"
+		]),
+		action : ["reaction", ""]
+	},
+
+	wrestler : {
+		name : "Wrestler Fighting Style",
+		description : desc([
+						"When hitting someone on my turn, I can attempt to grapple or shove them as a bonus action",
+						"I can drag grappled creatures up to my full speed"
+					]),
+		action : ["bonus action", "Grapple or shove (after hitting with Attack action)"]
 	}
 };
 
@@ -300,7 +444,8 @@ ClassList["fighter(laserllama)"] = {
 			minlevel : 1,
 			description : desc('Choose a Fighting Style for the fighter using the "Choose Feature" button above'),
 			choices : ["Archery", "Brawler", "Classical Swordplay", "Defense", "Dueling", "Dual Wielding", "Featherweight Fighting","Great Weapon Fighting", 
-						"Improvised Fighting", "Melee Marksman", "Protector", "Strongbow", "Thrown Weapon Fighting", "Versatile Fighting"],
+						"Improvised Fighting", "Melee Marksman", "Protector", "Strongbow", "Thrown Weapon Fighting", "Versatile Fighting", "Blind Warrior",
+						"Heavyweight Fighting", "Mariner", "Mountaineer", "Pit Fighting", "Shield Warrior", "Standard Bearer", "Wrestler"],
 			"archery" : FightingStyles.archery,
 			"classical swordplay" : FightingStyles.classical,
 			"brawler": FightingStyles.brawler,
@@ -314,7 +459,15 @@ ClassList["fighter(laserllama)"] = {
 			"protector" : FightingStyles.protector,
 			"strongbow" : FightingStyles.strongbow,
 			"thrown weapon fighting" : FightingStyles.thrown,
-			"versatile fighting" : FightingStyles.versatile
+			"versatile fighting" : FightingStyles.versatile,
+			"blind warrior" : FightingStyles.blind,
+			"heavyweight fighting" : FightingStyles.heavyweight,
+			"mariner" : FightingStyles.mariner,
+			"mountaineer" : FightingStyles.mountaineer,
+			"pit fighting" : FightingStyles.pit,
+			"shield warrior" : FightingStyles.shieldwarrior,
+			"standard bearer" : FightingStyles.standardbearer,
+			"wrestler" : FightingStyles.wrestler
 		},
 
 		"second wind" : {
