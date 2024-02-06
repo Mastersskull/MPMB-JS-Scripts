@@ -112,7 +112,7 @@ var FightingStyles = {
 		description : desc([
 					"I can add make an additional attack when two-weapon fighting as part of my attack action",
 					"I can add my ability modifier to the damage of my off-hand attacks"
-							]),
+					]),
 		calcChanges : {
 			atkCalc : [
 				function (fields, v, output) {
@@ -524,7 +524,8 @@ ClassList["fighter(laserllama)"] = {
 					];
 				}
 				return desc(descr);
-			})
+			}),
+			action : [["action", ""]]
 		},
 
 		"subclassfeature3" : {
@@ -582,6 +583,59 @@ ClassList["fighter(laserllama)"] = {
 	}
 
 }
+
+// Subclasses
+AddSubClass("fighter(laserllama)", "master at arms", {
+	regExpSearch : /^(?=.*master)(?=.*arms).*$/i,
+	subname : "Master at Arms",
+	fullname : "Master at Arms",
+	source : [["GMB:LL", 0]],
+	abilitySave : 1,
+	abilitySaveAlt : 2,
+	features : {
+		"subclassfeature3" : function () { // copied from Champion subclass, avoids having to copy all fighting styles
+			var FSfea = newObj(ClassList["fighter(laserllama)"].features["fighting style"]);
+			FSfea.name = "Additional Fighting Style";
+			FSfea.source = [["GMB:LL", 0]];
+			FSfea.minlevel = 3;
+			FSfea.description = levels.map(function (n) {
+					if (n < 3) return '';
+
+					if (n >= 3 && n < 7) {
+						var result = ["I learn an additional Fighting Style but can only benefit from one at a time",
+							"I can switch between Fighting Styles I know as a bonus action"]
+					}
+
+					if (n >= 7 && n < 10) {
+						var result = ["I learn two additional Fighting Styles but can only benefit from one at a time",
+							"I can switch between Fighting Styles I know as a bonus action"]
+					}
+
+					if (n >= 10 && n < 15) {
+						var result = ["I learn two additional Fighting Styles but can only benefit from two at a time",
+							"I can change one active Fighting Styles I know with another as a bonus action"]
+					}
+
+					if (n >= 15) {
+						var result = ["I learn three additional Fighting Styles but can only benefit from two at a time",
+							"I can change one active Fighting Styles I know with another as a bonus action"]
+					}
+
+					return desc(result)
+				});
+			FSfea.action = [["bonus action", "Change fighting style"]];
+
+			FSfea.extraname = "Additional Fighting Style";
+			FSfea.extrachoices = FSfea.choices;
+			FSfea.extraTimes = levels.map(function (n) {
+					return n < 3 ? 0 : n < 7 ? 1 : n < 15 ? 2 : 3;
+				});
+			FSfea.choices = undefined; // work-around to prevent having it twice
+
+			return FSfea;
+		}()
+	}
+})
 
 // Feats
 FeatsList["alternate defensive duelist"] = {
