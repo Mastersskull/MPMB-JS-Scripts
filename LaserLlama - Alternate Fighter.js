@@ -648,6 +648,23 @@ FeatsList["alternate defensive duelist"] = {
 	action : ["reaction", " (when hit in melee)"]
 };
 
+FeatsList["masterful technique"] = {
+	name : "Masterful Technique",
+	source : [["GMB:LL"]],
+	descriptionFull : "You have learned to change your fighting stance to best meet the challenges you face. You gain the following benefits: You increase your Strength, Dexterity, or Constitution score by 1, to a maximum of 20. You learn one Fighting Style of your choice from those available to the Alternate Fighter. However, you can only benefit from the effects of one Fighting Style you know. As a bonus action, you can switch your current Fighting Style to another Fighting Style that you know.",
+	description: 'I learn an additional Fighting Style but can only benefit from one at a time. I can switch between Fighting Styles I know as a bonus action. ' + "[+1 " + (typePF ? "Str, Dex or Con" : "Strength, Dexterity or Constitution") + "]",
+	bonusClassExtrachoices : [{
+		"class" : "fighter(laserllama)",
+		"subclass" : "fighter(laserllama)-master at arms",
+		feature : "subclassfeature3",
+		bonus : 1
+	}],
+	action: [["bonus action", "Change fighting style"]],
+	prerequisite : "At least one Fighting Style known",
+	prereqeval : function (v) { return classes.known["fighter"] || classes.known["fighter(laserllama)"] || (classes.known["ranger"] && classes.known["ranger"].level >= 2) || (classes.known["paladin"] && classes.known["paladin"].level >= 2)}, // hard-coded list because I can't find how to check if fighting style attribute exists dynamically
+	scorestxt : "+1 Strength, Dexterity or Constitution"
+};
+
 // Source information
 SourceList["GMB:LL"] = {
 	name : "LaserLlama",
