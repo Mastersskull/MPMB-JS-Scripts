@@ -478,7 +478,11 @@ ClassList["fighter(laserllama)"] = {
 				"As a bonus action, I can regain hit points equal to 1d10 + fighter level"
 			]),
 			additional : levels.map(function (n) {
-				return "1d10+" + n;
+				if (n < 11) {
+					return "1d10+" + n;
+				} else {
+					return "1d10+" + n + ", exploit die";
+				}
 			}),
 			usages : levels.map(function (n) { return n < 1 ? "" : n < 20 ? 1 : 2 }),
 			recovery : "short rest",
@@ -489,11 +493,10 @@ ClassList["fighter(laserllama)"] = {
 			name : "Martial Exploits",
 			minlevel : 2,
 			source : [["GMB:LL", 0]],
-			description : desc(["Use the \"Choose Feature\" button above to choose Martial Exploits."]),
-			usages : ['', 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6],
-			additional : ['', "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
-			recovery : "short rest",		
-			extraname : "Exploits",
+			description : desc(["I gain Exploit Dice, which are used to fuel my Martial Exploits", "Use the \"Choose Feature\" button above to choose Martial Exploits"]),
+
+			// Martial exploits
+			extraname : "Martial Exploits",
 			extrachoices : [
 				"Aggressive Sprint"
 				],
@@ -503,7 +506,12 @@ ClassList["fighter(laserllama)"] = {
 				description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
 				submenu : "[1st-degree exploits]",
 				source : [["GMB:LL", 0]]
-			}
+			},
+
+			// Exploit dice
+			usages : ['', 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6],
+			additional : ['', "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
+			recovery : "short rest"
 		},
 
 		"know your enemy" : {
@@ -593,7 +601,62 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 	abilitySave : 1,
 	abilitySaveAlt : 2,
 	features : {
-		"subclassfeature3" : function () { // copied from Champion subclass, avoids having to copy all fighting styles
+
+		// NOTE: This overrides martial exploits from the main class and is necessary to update the Exploit Dice size
+		// See this for more details: https://canary.discord.com/channels/533350585706217494/863810547584467004/1204723669042069525
+		"martial exploits": function() {
+			var MEfea = newObj(ClassList["fighter(laserllama)"].features["martial exploits"]);
+			MEfea.additional = ['', "d6", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12", "d12", "d12", "d12", "d12", "d12", "d12"];
+			return MEfea;
+		}(),
+
+		"subclassfeature3" : {
+			name : "Advanced Technique",
+			minlevel : 3,
+			source : [["GMB:LL", 0]],
+			description : levels.map(function (n) {
+					if (n < 3) return '';
+
+					if (n >= 3 && n < 5) {
+						var result = ["My total number of Exploit Dice increases by 1 and my Exploit Dice increase to become 1d8",
+						"I also learn two 1st degree Martial Exploits of my choice who don't count against my total"]
+					}
+
+					if (n >= 5 && n < 9) {
+						var result = ["My total number of Exploit Dice increases by 1 and my Exploit Dice increase to become 1d10",
+						"I also learn two 1st degree and two 2nd degree Martial Exploits of my choice who don't count against my total"]
+					}
+
+					if (n >= 9 && n < 11) {
+						var result = ["My total number of Exploit Dice increases by 1 and my Exploit Dice increase to become 1d10",
+						"I also learn two 1st degree, two 2nd degree and a 3rd degree Martial Exploits of my choice who don't count against my total"]
+					}
+
+					if (n >= 11) {
+						var result = ["My total number of Exploit Dice increases by 1 and my Exploit Dice increase to become 1d12",
+						"I also learn two 1st degree, two 2nd degree and a 3rd degree Martial Exploits of my choice who don't count against my total"]
+					}
+
+					return desc(result)
+				}),
+
+			extraLimitedFeatures : [{
+				name : "Martial Exploits",
+				usages : 1,
+				recovery : "short rest",
+				addToExisting : true
+			}],
+
+			bonusClassExtrachoices : [{
+				"class" : "fighter(laserllama)",
+				feature : "martial exploits",
+				bonus : 2
+			}]
+			// NOTE: It currently does not check if those are level 1 exploits. 
+			// The exact details of this part are TBA considered I don't have exploits added in the first place atm.
+		},
+
+		"subclassfeature3.1" : function () { // copies the main class feature, avoids having to copy all fighting styles
 			var FSfea = newObj(ClassList["fighter(laserllama)"].features["fighting style"]);
 			FSfea.name = "Additional Fighting Style";
 			FSfea.source = [["GMB:LL", 0]];
@@ -630,10 +693,64 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 			FSfea.extraTimes = levels.map(function (n) {
 					return n < 3 ? 0 : n < 7 ? 1 : n < 15 ? 2 : 3;
 				});
-			FSfea.choices = undefined; // work-around to prevent having it twice
+			FSfea.choices = undefined; // work-around to prevent having the choice menu display twice
 
 			return FSfea;
-		}()
+		}(),
+
+		"subclassfeature7": {
+			name : "Master of Forms",
+			minlevel : 7,
+			source : [["GMB:LL", 0]],
+			description: levels.map(function (n) {
+					if (n < 7) return '';
+
+					if (n >= 7 && n < 15) {
+						var result = ["I learn two additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+					}
+
+					if (n >= 15 && n < 18) {
+						var result = ["I learn three additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+					}
+
+					if (n >= 18) {
+						var result = ["I learn four additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+					}
+
+					return desc(result)
+				}),
+
+			// Exploit choice menu
+			extraname : "Exploits",
+			extrachoices : [
+				"Aggressive Sprint"
+				],
+			extraTimes : levels.map(function (n) {
+					return n < 7 ? 0 : n < 15 ? 2 : n < 18 ? 4 : 3;
+				}),
+
+			"aggressive sprint" : {
+				name : "Aggressive Sprint",
+				description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
+				submenu : "[1st-degree exploits]",
+				source : [["GMB:LL", 0]]
+			}
+			// NOTE: This is TBA considering I don't have the exploits from other classes in the first place
+		},
+
+		"subclassfeature10" : {
+			name : "Masterful Surge",
+			source : [["GMB:LL", 0]],
+			minlevel : 10,
+			description : desc(["Whenever I use action surge, I regain an exploit die which can only be used in the additional action (and disappears if not consumed)"])
+		},
+
+		"subclassfeature18" : {
+			name : "Warrior of Legend",
+			source : [["GMB:LL", 0]],
+			minlevel : 18,
+			description : desc(["Once per turn, instead of expending an Exploit Die, I can use a d6 as Exploit Die", "Also, I can replace an Exploit I know with another of the same level with 1h of training (can be part of a short/long rest)"])
+		}
 	}
 })
 
@@ -661,7 +778,8 @@ FeatsList["masterful technique"] = {
 	}],
 	action: [["bonus action", "Change fighting style"]],
 	prerequisite : "At least one Fighting Style known",
-	prereqeval : function (v) { return classes.known["fighter"] || classes.known["fighter(laserllama)"] || (classes.known["ranger"] && classes.known["ranger"].level >= 2) || (classes.known["paladin"] && classes.known["paladin"].level >= 2)}, // hard-coded list because I can't find how to check if fighting style attribute exists dynamically
+	prereqeval : function (v) { return classes.known["fighter"] || classes.known["fighter(laserllama)"] || (classes.known["ranger"] && classes.known["ranger"].level >= 2) || (classes.known["paladin"] && classes.known["paladin"].level >= 2)}, 
+	// NOTE: The prerequesite is not exhaustive. It is probably possible to make it dynamically instead of hard-coded, but I don't think it's worth the time investment since you can bypass it anyways.
 	scorestxt : "+1 Strength, Dexterity or Constitution"
 };
 
