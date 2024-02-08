@@ -653,7 +653,7 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 				bonus : 2
 			}]
 			// NOTE: It currently does not check if those are level 1 exploits. 
-			// The exact details of this part are TBA considered I don't have exploits added in the first place atm.
+			// The exact details of this part are TBA considering I don't have exploits added in the first place atm.
 		},
 
 		"subclassfeature3.1" : function () { // copies the main class feature, avoids having to copy all fighting styles
@@ -726,7 +726,7 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 				"Aggressive Sprint"
 				],
 			extraTimes : levels.map(function (n) {
-					return n < 7 ? 0 : n < 15 ? 2 : n < 18 ? 4 : 3;
+					return n < 7 ? 0 : n < 15 ? 2 : n < 18 ? 3 : 4;
 				}),
 
 			"aggressive sprint" : {
@@ -781,6 +781,35 @@ FeatsList["masterful technique"] = {
 	prereqeval : function (v) { return classes.known["fighter"] || classes.known["fighter(laserllama)"] || (classes.known["ranger"] && classes.known["ranger"].level >= 2) || (classes.known["paladin"] && classes.known["paladin"].level >= 2)}, 
 	// NOTE: The prerequesite is not exhaustive. It is probably possible to make it dynamically instead of hard-coded, but I don't think it's worth the time investment since you can bypass it anyways.
 	scorestxt : "+1 Strength, Dexterity or Constitution"
+};
+
+FeatsList["signature technique"] = {
+	name : "Signature Technique",
+	source : [["GMB:LL"]],
+	descriptionFull : "You have practiced and mastered a single technique so you can use it at will. Choose one 1st-degree Exploit you know is on the Fighter's list of Martial Exploits that forces a creature to make a saving throw or deals damage. Once on each of your turns, you can use this Signature Exploit, rolling a d4 in place of expending an Exploit Die. You can choose this Feat more than once, however, you are always limited to one Signature Exploit per turn.",
+	description : "I mastered a single 1st-degree Exploit and can use it every turn, using a d4 instead of expending an Exploit Die. It has to be an exploit I know which causes damage or a saving throw. This feat can be taken more than once, but only one Signature Exploit can be used per turn.",
+	prerequisite : "At least one Martial Exploit Known",
+	prereqeval : function(v) { return GetFeatureChoice('classes', 'fighter(laserllama)', 'martial exploits', true).length >= 1 }
+};
+
+FeatsList["martial training"] = {
+	name : "Martial Training",
+	source : [["GMB:LL"]],
+	descriptionFull : "You have studied combat techniques that allow you to perform Martial Exploits. You gain the following benefits: You learn two 1st-degree Martial Exploits of your choice from those available to the Alternate Fighter. If an Exploit you use requires the target to make a saving throw to resist the effects, the DC is equal to 8 + your proficiency bonus + your Strength or Dexterity modifier (your choice). You gain two d4 Exploit Dice to fuel your Exploits. An Exploit Die is expended when you use it. You regain all of your Exploit Dice when you finish a short or long rest. If you already have Exploit Dice from another source, you only gain one Exploit Die equal to your other Exploit Dice.",
+	description : "",
+	calculate : "event.value = 'I learn two maneuvers of my choice from those available to the Fighter (2nd page \"Choose Feature\" button). The saving throw DC for this is ' + (8 + Number(How('Proficiency Bonus')) + Math.max(Number(What('Str Mod')), Number(What('Dex Mod')))) + ' (8 + proficiency bonus + Str/Dex mod). I gain two (only one if already have Exploit Die) Exploit dice (d4), which I regain when I finish a short rest.';",
+	bonusClassExtrachoices : [{
+		"class" : "fighter(laserllama)",
+		"feature" : "martial exploits",
+		"bonus" : 2
+	}],
+	extraLimitedFeatures : [{
+		name : "Martial Exploits",
+		usages : 2, // I don't think it's easily doable to check for the condition soooo just gonna leave it like that
+		additional : 'd4',
+		recovery : "short rest",
+		addToExisting : true
+	}]
 };
 
 // Source information
