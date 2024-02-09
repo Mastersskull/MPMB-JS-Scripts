@@ -429,6 +429,7 @@ SpellsList["arresting strike"] = {
 	range : "Self",
 	components : "W", // W = weapon
 	duration : "Instantaneous",
+	save : "Dex",
 	description : "On hit, target makes Dex saving throw or speed reduced to 0 and takes an Exploit Die of bonus dmg",
 	descriptionFull : "When you hit a target with a weapon attack, you can expend one Exploit Die and force it to make a Dexterity saving throw. On a failure, it takes bonus damage equal to one roll of your Exploit Die and its speed is 0 until the start of your next turn."
 };
