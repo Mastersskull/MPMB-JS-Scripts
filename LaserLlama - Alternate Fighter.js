@@ -401,6 +401,43 @@ var FightingStyles = {
 	}
 };
 
+CurrentSpells["fighter(laserllama)"] = {
+	name : "",
+	shortname : "Martial Exploits",
+	ability: 1,
+	bonus : {}
+}
+
+spellSchoolList["Combat"] = "combat";
+
+SpellsList["arresting strike"] = {
+	name : "Arresting Strike",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Combat",
+	time : "Hit",
+	range : "Self",
+	components : "W", // W = weapon
+	duration : "Instantaneous",
+	description : "On hit, target makes Dex saving throw or speed reduced to 0 and takes an Exploit Die of bonus dmg",
+	descriptionFull : "When you hit a target with a weapon attack, you can expend one Exploit Die and force it to make a Dexterity saving throw. On a failure, it takes bonus damage equal to one roll of your Exploit Die and its speed is 0 until the start of your next turn."
+};
+
+SpellsList["aggressive sprint"] = {
+	name : "Aggressive sprint",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 2,
+	school : "Combat",
+	time : "1 bns",
+	range : "Self",
+	//components : "V,S,M",
+	duration : "Instantaneous",
+	description : "Move up to my walk speed toward a hostile creature; Single melee weapon attack against it",
+	descriptionFull : "As a bonus action, you can expend one Exploit Die to move up to your walking speed toward a hostile creature that you can see and make a single melee weapon attack against it."
+};
+
 // Main class
 ClassList["fighter(laserllama)"] = {
 
@@ -494,18 +531,51 @@ ClassList["fighter(laserllama)"] = {
 			minlevel : 2,
 			source : [["GMB:LL", 0]],
 			description : desc(["I gain Exploit Dice, which are used to fuel my Martial Exploits", "Use the \"Choose Feature\" button above to choose Martial Exploits"]),
+			toNotesPage : [{
+				name : "Martial Exploits",
+				note : desc(["Below are all Martial Exploits I know"])
+			}],
 
-			// Martial exploits
+			// Martial Exploits
 			extraname : "Martial Exploits",
-			extrachoices : [
-				"Aggressive Sprint"
-				],
 			extraTimes : ['', 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 10, 10],
+
+			extrachoices : ["Aggressive Sprint", "Arresting Strike"],
+
 			"aggressive sprint" : {
 				name : "Aggressive Sprint",
-				description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
+				//description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
+				toNotesPage : [{
+					name : "Aggressive Sprint Exploit",
+					note : "\n    As a bonus action, you can expend one Exploit Die to move up to your walking speed toward a hostile creature that you can see and make a single melee weapon attack against it.",
+					amendTo : "Martial Exploits"
+				}],
+				submenu : "[2nd-degree exploits]",
+				source : [["GMB:LL", 0]],
+				spellcastingBonus : [{
+					name : "Aggressive Sprint Exploit",
+					spellcastingAbility : 1,
+					spells : ["aggressive sprint"],
+					selection : ["aggressive sprint"]
+				}],
+				prereqeval : function(v) { return classes.known["fighter(laserllama)"].level >= 5; }
+			},
+
+			"arresting strike" : {
+				name : "Arresting Strike",
+				toNotesPage : [{
+					name : "Arresting Strike Exploit",
+					note : "\n    When you hit a target with a weapon attack, you can expend one Exploit Die and force it to make a Dexterity saving throw. On a failure, it takes bonus damage equal to one roll of your Exploit Die and its speed is 0 until the start of your next turn.",
+					amendTo : "Martial Exploits"
+				}],
 				submenu : "[1st-degree exploits]",
-				source : [["GMB:LL", 0]]
+				source : [["GMB:LL", 0]],
+				spellcastingBonus : [{
+					name : "Arresting Strike Exploit",
+					spellcastingAbility : 1,
+					spells : ["arresting strike"],
+					selection : ["arresting strike"]
+				}]
 			},
 
 			// Exploit dice
@@ -731,9 +801,20 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 
 			"aggressive sprint" : {
 				name : "Aggressive Sprint",
-				description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
+				//description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
+				toNotesPage : [{
+					name : "Aggressive Sprint Exploit",
+					note : "\n    As a bonus action, you can expend one Exploit Die to move up to your walking speed toward a hostile creature that you can see and make a single melee weapon attack against it.",
+					amendTo : "Martial Exploits"
+				}],
 				submenu : "[1st-degree exploits]",
-				source : [["GMB:LL", 0]]
+				source : [["GMB:LL", 0]],
+				spellcastingBonus : [{
+					name : "Aggressive Sprint Exploit",
+					spellcastingAbility : 1,
+					spells : ["aggressive sprint"],
+					selection : ["aggressive sprint"]
+				}]
 			}
 			// NOTE: This is TBA considering I don't have the exploits from other classes in the first place
 		},
