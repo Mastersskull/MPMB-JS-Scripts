@@ -401,16 +401,25 @@ var FightingStyles = {
 	}
 };
 
+
+// Defining the Fighter spell sheet - also known as Martial exploits
 CurrentSpells["fighter(laserllama)"] = {
-	name : "",
+	name : "Fighter",
 	shortname : "Martial Exploits",
 	ability: 1,
 	bonus : {}
 }
 
+// New spell schools
 spellSchoolList["Combat"] = "combat";
+spellSchoolList["Skill"] = "skill";
 
+// Exploits
 SpellsList["arresting strike"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (combat)]",
+	// Regular spell attributes
 	name : "Arresting Strike",
 	classes : ["fighter(laserllama)"],
 	source : ["GMB:LL", 0],
@@ -424,7 +433,30 @@ SpellsList["arresting strike"] = {
 	descriptionFull : "When you hit a target with a weapon attack, you can expend one Exploit Die and force it to make a Dexterity saving throw. On a failure, it takes bonus damage equal to one roll of your Exploit Die and its speed is 0 until the start of your next turn."
 };
 
+SpellsList["commanding presence"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (checks)]",
+	prereqeval : function(v) { return What('Str') >= 11 || What('Cha') >= 11},
+	// Regular spell attributes
+	name : "Commanding Presence",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Skill",
+	time : "Check",
+	range : "Self",
+	duration : "Instantaneous",
+	description : "Add my Exploit Die to Persuasion and Intimidation checks; Can make Str (Intimidation) checks (passive)",
+	descriptionFull : "When making a Charisma (Persuasion) or Charisma (Intimidation) check, you can expend one Exploit Die, roll it, and add the result to your ability check after rolling the d20 but before determining success. Additionally, when required to make a Charisma (Intimidation) check, you can opt to make a Strength (Intimidation) check instead."
+};
+
 SpellsList["aggressive sprint"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[2nd-degree exploits]",
+	prereqeval : function(v) { return classes.known["fighter(laserllama)"].level >= 5 /*return What('Str') >= 11;*/},
+	// Regular spell attributes
 	name : "Aggressive sprint",
 	classes : ["fighter(laserllama)"],
 	source : ["GMB:LL", 0],
@@ -526,63 +558,61 @@ ClassList["fighter(laserllama)"] = {
 			action : [["bonus action", ""]]
 		},
 
-		"martial exploits": {
-			name : "Martial Exploits",
-			minlevel : 2,
-			source : [["GMB:LL", 0]],
-			description : desc(["I gain Exploit Dice, which are used to fuel my Martial Exploits", "Use the \"Choose Feature\" button above to choose Martial Exploits"]),
-			toNotesPage : [{
+		"martial exploits": function(){
+
+			// Fixed attributes
+			MartialExploits = {
 				name : "Martial Exploits",
-				note : desc(["Below are all Martial Exploits I know"])
-			}],
-
-			// Martial Exploits
-			extraname : "Martial Exploits",
-			extraTimes : ['', 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 10, 10],
-
-			extrachoices : ["Aggressive Sprint", "Arresting Strike"],
-
-			"aggressive sprint" : {
-				name : "Aggressive Sprint",
-				//description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
-				toNotesPage : [{
-					name : "Aggressive Sprint Exploit",
-					note : "\n    As a bonus action, you can expend one Exploit Die to move up to your walking speed toward a hostile creature that you can see and make a single melee weapon attack against it.",
-					amendTo : "Martial Exploits"
-				}],
-				submenu : "[2nd-degree exploits]",
+				minlevel : 2,
 				source : [["GMB:LL", 0]],
-				spellcastingBonus : [{
-					name : "Aggressive Sprint Exploit",
-					spellcastingAbility : 1,
-					spells : ["aggressive sprint"],
-					selection : ["aggressive sprint"]
-				}],
-				prereqeval : function(v) { return classes.known["fighter(laserllama)"].level >= 5; }
-			},
-
-			"arresting strike" : {
-				name : "Arresting Strike",
+				description : desc(["I gain Exploit Dice, which are used to fuel my Martial Exploits", "Use the \"Choose Feature\" button above to choose Martial Exploits"]),
 				toNotesPage : [{
-					name : "Arresting Strike Exploit",
-					note : "\n    When you hit a target with a weapon attack, you can expend one Exploit Die and force it to make a Dexterity saving throw. On a failure, it takes bonus damage equal to one roll of your Exploit Die and its speed is 0 until the start of your next turn.",
-					amendTo : "Martial Exploits"
+					name : "Martial Exploits",
+					note : desc(["Below are all Martial Exploits I know"])
 				}],
-				submenu : "[1st-degree exploits]",
-				source : [["GMB:LL", 0]],
-				spellcastingBonus : [{
-					name : "Arresting Strike Exploit",
-					spellcastingAbility : 1,
-					spells : ["arresting strike"],
-					selection : ["arresting strike"]
-				}]
-			},
 
-			// Exploit dice
-			usages : ['', 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6],
-			additional : ['', "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
-			recovery : "short rest"
-		},
+				// Martial Exploits
+				extraname : "Martial Exploits",
+				extraTimes : ['', 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 10, 10],
+				extrachoices : [],
+
+				// Exploit dice
+				usages : ['', 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6],
+				additional : ['', "d6", "d6", "d6", "d8", "d8", "d8", "d8", "d8", "d8", "d10", "d10", "d10", "d10", "d10", "d10", "d12", "d12", "d12", "d12"],
+				recovery : "short rest"
+			}
+
+			// Make a filtered spell list that contains only Fighter(laserllama) "spells"
+			const FighterSpells = Object.keys(SpellsList).filter((key) => SpellsList[key].isExploit);
+			
+			var NewSpell;
+			// Iterate over all Fighter(laserllama) "spells"
+			for (var i = 0; i < FighterSpells.length; i++) {
+				NewSpell = SpellsList[FighterSpells[i]];
+
+				MartialExploits.extrachoices.push(NewSpell.name); // Add "spell" name to menu options
+
+				MartialExploits[FighterSpells[i]] = { // Add "spell" to the main item (when it is picked through the menu)
+					name: NewSpell.name,
+					toNotesPage : [{ // What is added to the notes page
+						name : NewSpell.name + " Exploit",
+						note : desc(NewSpell.descriptionFull),
+						amendTo : "Martial Exploits"
+					}],
+					source: NewSpell.source,
+					spellcastingBonus : [{ // What is added to the spellcasting sheet
+						name : NewSpell.name + " Exploit",
+						spellcastingAbility : 1,
+						spells : [FighterSpells[i]],
+						selection : [FighterSpells[i]]
+					}],
+					prereqeval: NewSpell.prereqeval,
+					submenu: NewSpell.submenu
+				}
+			}
+
+			return MartialExploits;
+		}(),
 
 		"know your enemy" : {
 			name : "Know Your Enemy",
