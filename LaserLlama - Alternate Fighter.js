@@ -413,8 +413,32 @@ CurrentSpells["fighter(laserllama)"] = {
 // New spell schools
 spellSchoolList["Combat"] = "combat";
 spellSchoolList["Skill"] = "skill";
+spellSchoolList["Order"] = "order";
 
 // Exploits
+// Warlord Exploits (for testing Master at Arms)
+SpellsList["intimidating command"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[2nd-degree exploits]",
+	prereqeval : function(v) { return What('Cha') >= 13},
+	// Regular spell attributes
+	name : "Intimidating Command",
+	classes : ["warlord"],
+	source : ["GMB:LL", 0],
+	level : 2,
+	school : "Combat",
+	time : "1 bns",
+	range : "30 ft",
+	components : "V",
+	duration : "Instantaneous",
+	save : "Wis",
+	description : "1 crea save or follow one word command (cannot be directly harmful), e.g. approach, drop, flee, halt",
+	descriptionFull : "As a bonus action, you can expend an Exploit Die to shout a one-word command at one creature that can hear you within 30 feet. It must succeed on a Wisdom saving throw, or it is compelled to obey your command to the best of its ability on its next turn unless its actions would be directly harmful to it"
+};
+
+// Martial Exploits
+
 SpellsList["arresting strike"] = {
 	// Exploit exclusive attributes
 	isExploit : true,
@@ -513,7 +537,6 @@ SpellsList["aggressive sprint"] = {
 	// Exploit exclusive attributes
 	isExploit : true,
 	submenu : "[2nd-degree exploits]",
-	prereqeval : function(v) { return classes.known["fighter(laserllama)"].level >= 5 },
 	// Regular spell attributes
 	name : "Aggressive sprint",
 	classes : ["fighter(laserllama)"],
@@ -648,6 +671,7 @@ ClassList["fighter(laserllama)"] = {
 				// NOTE: this is literally a SpellsList[key].classes.includes("fighter(laserllama)") but for some cursed reason I can't use that function
 			});
 			
+			//const DegreeToMinLevel = [0,0,5,9,13,17]
 			// Iterate over all Fighter(laserllama) "spells"
 			for (var i = 0; i < FighterSpells.length; i++) {
 				var NewSpell = SpellsList[FighterSpells[i]];
@@ -668,8 +692,34 @@ ClassList["fighter(laserllama)"] = {
 						spells : [FighterSpells[i]],
 						selection : [FighterSpells[i]]
 					}],
-					prereqeval: NewSpell.prereqeval,
 					submenu: NewSpell.submenu
+				}
+
+
+				// Matching prereqeval with required Fighter level
+				// NOTE: I am doing this ugly copypasted thing because DegreeToMinLevel[NewSpell.level] didn't work, I'm assuming due to lexical scoping but that kinda sucks
+				// It's easier for me to do this than spend idk how much time debugging this issue
+				if (NewSpell.level == 2) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 5 }; 
+				}
+				if (NewSpell.level == 3) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 9 }; 
+				}
+				if (NewSpell.level == 4) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 13 }; 
+				}
+				if (NewSpell.level == 5) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 17 }; 
+				}
+
+				// Combining level prereq (defined just above) with spell prereq (defined in the spell itself)
+				// Exploit has a prerequisite and a level prerequisite
+				if (NewSpell.prereqeval && MartialExploits[FighterSpells[i]].prereqeval) {
+					MartialExploits[FighterSpells[i]].prereqeval = (MartialExploits[FighterSpells[i]].prereqeval && NewSpell.prereqeval);
+				}
+				// Exploit has a prerequisite but no level prerequesite
+				if (NewSpell.prereqeval && !MartialExploits[FighterSpells[i]].prereqeval) {
+					MartialExploits[FighterSpells[i]].prereqeval = NewSpell.prereqeval;
 				}
 			}
 
@@ -801,6 +851,10 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 
 					return desc(result)
 				}),
+			toNotesPage : [{
+					name : "Additional Exploits",
+					note : desc(["Below are my Master at Arms exploits"])
+				}],
 
 			extraLimitedFeatures : [{
 				name : "Martial Exploits",
@@ -860,56 +914,96 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 			return FSfea;
 		}(),
 
-		"subclassfeature7": {
-			name : "Master of Forms",
-			minlevel : 7,
-			source : [["GMB:LL", 0]],
-			description: levels.map(function (n) {
-					if (n < 7) return '';
+		"subclassfeature7": function(){
 
-					if (n >= 7 && n < 15) {
-						var result = ["I learn two additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
-					}
-
-					if (n >= 15 && n < 18) {
-						var result = ["I learn three additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
-					}
-
-					if (n >= 18) {
-						var result = ["I learn four additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
-					}
-
-					return desc(result)
-				}),
-
-			// Exploit choice menu
-			extraname : "Exploits",
-			extrachoices : [
-				"Aggressive Sprint"
-				],
-			extraTimes : levels.map(function (n) {
-					return n < 7 ? 0 : n < 15 ? 2 : n < 18 ? 3 : 4;
-				}),
-
-			"aggressive sprint" : {
-				name : "Aggressive Sprint",
-				//description : desc(["As a bonus action, I can expend an Exploit Die to move up to my full speed towards a hostile creature I can see."]),
-				toNotesPage : [{
-					name : "Aggressive Sprint Exploit",
-					note : "\n    As a bonus action, you can expend one Exploit Die to move up to your walking speed toward a hostile creature that you can see and make a single melee weapon attack against it.",
-					amendTo : "Martial Exploits"
-				}],
-				submenu : "[1st-degree exploits]",
+			// Fixed attributes
+			MartialExploits = {
+				name : "Master of Forms",
+				minlevel : 7,
 				source : [["GMB:LL", 0]],
-				spellcastingBonus : [{
-					name : "Aggressive Sprint Exploit",
-					spellcastingAbility : 1,
-					spells : ["aggressive sprint"],
-					selection : ["aggressive sprint"]
-				}]
+				description: levels.map(function (n) {
+						if (n < 7) return '';
+
+						if (n >= 7 && n < 15) {
+							var result = ["I learn two additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+						}
+
+						if (n >= 15 && n < 18) {
+							var result = ["I learn three additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+						}
+
+						if (n >= 18) {
+							var result = ["I learn four additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+						}
+
+						return desc(result)
+					}),
+
+				// Exploit choice menu
+				extraname : "Master at Arms Exploits",
+				extrachoices : [],
+				extraTimes : levels.map(function (n) {
+						return n < 7 ? 0 : n < 15 ? 2 : n < 18 ? 3 : 4;
+					}),
 			}
-			// NOTE: This is TBA considering I don't have the exploits from other classes in the first place
-		},
+
+			// Make a filtered spell list that contains only exploits
+			const FighterSpells = Object.keys(SpellsList).filter((key) => SpellsList[key].isExploit);
+			
+			//const DegreeToMinLevel = [0,0,5,9,13,17]
+			// Iterate over all Fighter(laserllama) "spells"
+			for (var i = 0; i < FighterSpells.length; i++) {
+				var NewSpell = SpellsList[FighterSpells[i]];
+
+				MartialExploits.extrachoices.push(NewSpell.name); // Add "spell" name to menu options
+
+				MartialExploits[FighterSpells[i]] = { // Add "spell" to the main item (when it is picked through the menu)
+					name: NewSpell.name,
+					toNotesPage : [{ // What is added to the notes page
+						name : NewSpell.name + " Exploit",
+						note : desc(NewSpell.descriptionFull),
+						amendTo : "Additional Exploits"
+					}],
+					source: NewSpell.source,
+					spellcastingBonus : [{ // What is added to the spellcasting sheet
+						name : NewSpell.name + " Exploit",
+						spellcastingAbility : 1,
+						spells : [FighterSpells[i]],
+						selection : [FighterSpells[i]]
+					}],
+					submenu: NewSpell.submenu
+				}
+
+
+				// Matching prereqeval with required Fighter level
+				// NOTE: I am doing this ugly copypasted thing because DegreeToMinLevel[NewSpell.level] didn't work, I'm assuming due to lexical scoping but that kinda sucks
+				// It's easier for me to do this than spend idk how much time debugging this issue
+				if (NewSpell.level == 2) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 5 }; 
+				}
+				if (NewSpell.level == 3) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 9 }; 
+				}
+				if (NewSpell.level == 4) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 13 }; 
+				}
+				if (NewSpell.level == 5) {
+					MartialExploits[FighterSpells[i]].prereqeval = function(v) { return classes.known["fighter(laserllama)"].level >= 17 }; 
+				}
+
+				// Combining level prereq (defined just above) with spell prereq (defined in the spell itself)
+				// Exploit has a prerequisite and a level prerequisite
+				if (NewSpell.prereqeval && MartialExploits[FighterSpells[i]].prereqeval) {
+					MartialExploits[FighterSpells[i]].prereqeval = (MartialExploits[FighterSpells[i]].prereqeval && NewSpell.prereqeval);
+				}
+				// Exploit has a prerequisite but no level prerequesite
+				if (NewSpell.prereqeval && !MartialExploits[FighterSpells[i]].prereqeval) {
+					MartialExploits[FighterSpells[i]].prereqeval = NewSpell.prereqeval;
+				}
+			}
+
+			return MartialExploits;
+		}(),
 
 		"subclassfeature10" : {
 			name : "Masterful Surge",
@@ -938,6 +1032,15 @@ FeatsList["alternate defensive duelist"] = {
 	action : ["reaction", " (when hit in melee)"]
 };
 
+FeatsList["alternate weapon master"] = {
+	name : "Alternate Weapon Master",
+	source : [["P", 170]],
+	descriptionFull : "You have practiced extensively with a variety of weapons, gaining the following benefits:\n \u2022 Increase your Strength or Dexterity score by 1, to a maximum of 20.\n \u2022 You gain proficiency with all simple and martial weapons.\n \u2022 If you are already proficient with all simple and martial weapons, you can instead choose four types of weapons. Whenever you make a weapon attack with one of those weapons, you can treat a roll equal to your proficiency bonus or lower on the d20 as your proficiency bonus.",
+	description : "I gain proficiency with all simple or martial weapons of my choice. If I'm already proficient with all, I instead choose 4 weapons with which I can treat a result on the d20 as my Prof Bonus. [+1 Strength or Dexterity]",
+	weaponProfs: [true, true],
+	scorestxt : "+1 Strength or Dexterity"
+};
+
 FeatsList["masterful technique"] = {
 	name : "Masterful Technique",
 	source : [["GMB:LL"]],
@@ -960,9 +1063,55 @@ FeatsList["signature technique"] = {
 	name : "Signature Technique",
 	source : [["GMB:LL"]],
 	descriptionFull : "You have practiced and mastered a single technique so you can use it at will. Choose one 1st-degree Exploit you know is on the Fighter's list of Martial Exploits that forces a creature to make a saving throw or deals damage. Once on each of your turns, you can use this Signature Exploit, rolling a d4 in place of expending an Exploit Die. You can choose this Feat more than once, however, you are always limited to one Signature Exploit per turn.",
-	description : "I mastered a single 1st-degree Exploit and can use it every turn, using a d4 instead of expending an Exploit Die. It has to be an exploit I know which causes damage or a saving throw. This feat can be taken more than once, but only one Signature Exploit can be used per turn.",
+	description : "I mastered a single 1st-degree Exploit and can use it every turn, using a d4 instead of expending an Exploit Die. It has to be an exploit I know which causes damage or a saving throw.",
 	prerequisite : "At least one Martial Exploit Known",
+	allowDuplicates : true,
 	prereqeval : function(v) { return GetFeatureChoice('classes', 'fighter(laserllama)', 'martial exploits', true).length >= 1 }
+};
+
+FeatsList["signature weapon"] = {
+	name : "Signature Weapon",
+	source : [["GMB:LL"]],
+	descriptionFull : "You specialize in a single weapon, gaining benefits: +1 to Str, Dex, or Con (max 20), choose a proficient weapon as your Signature Weapon, its damage die increases by one size; when rolling a 1 on its damage die, reroll (use the new roll, even if it's another 1).",
+	description : "I specialize in a single weapon (in which I'm already proficient), gaining benefits: its damage die increases by one size; Reroll 1 on damage. " + "[+1 " + (typePF ? "Str, Dex or Con" : "Strength, Dexterity or Constitution") + "]",
+	scorestxt : "+1 Strength, Dexterity or Constitution",
+	calcChanges : {
+		atkAdd : [
+			function (fields, v) {
+				if (!v.isSpell && !v.isDC && fields.Proficiency && (/\bsignature\b/i).test(fields.WeaponTextName)) {
+					fields.Description += (fields.Description ? '; ' : '') + "Re-roll 1 on damage die"
+
+					switch (fields.Damage_Die) {
+					  case '1':
+					    fields.Damage_Die = '1d4'
+					    break;
+					  case '1d4':
+					  	fields.Damage_Die = '1d6'
+					  	break;
+					  case '1d6':
+					  	fields.Damage_Die = '1d8'
+					  	break;
+					  case '2d4':
+					  case '1d8':
+					    fields.Damage_Die = '1d10'
+					    break;
+					  case '1d10':
+					  	fields.Damage_Die = '1d12'
+					  	break;
+					  case '1d12':
+					  case '2d6':
+					    fields.Damage_Die = '2d6';
+					    fields.Damage_Bonus += 1;
+					    break;
+					  default:
+					    break;
+					}
+				}
+			},
+			"My Signature Weapon's damage die increases by one size; Reroll 1 on damage",
+			750
+		]
+	}
 };
 
 FeatsList["martial training"] = {
