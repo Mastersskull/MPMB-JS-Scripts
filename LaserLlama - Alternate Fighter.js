@@ -130,9 +130,6 @@ var FightingStyles = {
 		calcChanges : {
 			atkCalc : [
 				function (fields, v, output) {
-					for (var i = 1; i <= FieldNumbers.actions; i++) {
-						if ((/off.hand.attack/i).test(What('Bonus Action ' + i))) return;
-					};
 					if ((/\blight\b/i).test(fields.Description)) output.extraDmg += 1;
 				},
 				"When I'm wielding light weapons and not wearing medium or heavy armor nor a shield, I do +1 damage with light weapons."
@@ -1124,12 +1121,12 @@ FeatsList["signature weapon"] = {
 	name : "Signature Weapon",
 	source : [["GMB:LL"]],
 	descriptionFull : "You specialize in a single weapon, gaining benefits: +1 to Str, Dex, or Con (max 20), choose a proficient weapon as your Signature Weapon, its damage die increases by one size; when rolling a 1 on its damage die, reroll (use the new roll, even if it's another 1).",
-	description : "I specialize in a single weapon (in which I'm already proficient), gaining benefits: its damage die increases by one size; Reroll 1 on damage. " + "[+1 " + (typePF ? "Str, Dex or Con" : "Strength, Dexterity or Constitution") + "]",
+	description : "I specialize in a single weapon (in which I'm already proficient), gaining benefits: its damage die increases by one size; Reroll 1 on damage. Add 'signature' to the attack name to include the bonus. " + "[+1 " + (typePF ? "Str, Dex or Con" : "Strength, Dexterity or Constitution") + "]",
 	scorestxt : "+1 Strength, Dexterity or Constitution",
 	calcChanges : {
 		atkAdd : [
 			function (fields, v) {
-				if (!v.isSpell && !v.isDC && fields.Proficiency && (/\bsignature\b/i).test(fields.WeaponTextName)) {
+				if (!v.isSpell && !v.isDC && fields.Proficiency && (/\bsignature\b/i).test(v.WeaponTextName)) {
 					fields.Description += (fields.Description ? '; ' : '') + "Re-roll 1 on damage die"
 
 					switch (fields.Damage_Die) {
