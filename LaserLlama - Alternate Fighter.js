@@ -426,13 +426,32 @@ SpellsList["arresting strike"] = {
 	level : 1,
 	school : "Combat",
 	time : "Hit",
+	timeFull : "No action required, on hit with a weapon attack",
 	range : "Self",
 	components : "W", // W = weapon
-	compMaterial : "Melee weapon attack",
+	compMaterial : "Weapon attack",
 	duration : "Instantaneous",
 	save : "Dex",
 	description : "On hit, target makes Dex saving throw or speed reduced to 0 and takes an Exploit Die of bonus dmg",
 	descriptionFull : "When you hit a target with a weapon attack, you can expend one Exploit Die and force it to make a Dexterity saving throw. On a failure, it takes bonus damage equal to one roll of your Exploit Die and its speed is 0 until the start of your next turn."
+};
+
+SpellsList["brace up"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (combat)]",
+	prereqeval : function(v) { return What('Con') >= 11},
+	// Regular spell attributes
+	name : "Brace Up",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Combat",
+	time : "1 bns",
+	range : "Self",
+	duration : "Instantaneous",
+	description : "Gain 1+Con temporary hit points",
+	descriptionFull : "You steel yourself for combat, preparing yourself to take a hit. As a bonus action, you can expend one Exploit Die and gain temporary hit points equal to 1 + your Constitution modifier."
 };
 
 SpellsList["commanding presence"] = {
@@ -442,7 +461,7 @@ SpellsList["commanding presence"] = {
 	prereqeval : function(v) { return What('Str') >= 11 || What('Cha') >= 11},
 	// Regular spell attributes
 	name : "Commanding Presence",
-	classes : ["fighter(laserllama)"],
+	classes : ["fighter(laserllama)", "barbarian(laserllama)"],
 	source : ["GMB:LL", 0],
 	level : 1,
 	school : "Skill",
@@ -451,6 +470,43 @@ SpellsList["commanding presence"] = {
 	duration : "Instantaneous",
 	description : "Add my Exploit Die to Persuasion and Intimidation checks; Can make Str (Intimidation) checks (passive)",
 	descriptionFull : "When making a Charisma (Persuasion) or Charisma (Intimidation) check, you can expend one Exploit Die, roll it, and add the result to your ability check after rolling the d20 but before determining success. Additionally, when required to make a Charisma (Intimidation) check, you can opt to make a Strength (Intimidation) check instead."
+};
+
+SpellsList["counter"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (combat)]",
+	prereqeval : function(v) { return What('Dex') >= 11},
+	// Regular spell attributes
+	name : "Counter",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Combat",
+	time : "1 rea",
+	timeFull : "1 reaction, which you take when someone misses you with a melee attack",
+	range : "Self",
+	duration : "Instantaneous",
+	description : "When a crea misses me in melee; Use my reaction for melee attack; Add exploit die to dmg",
+	descriptionFull : "When a creature you can see misses you with a melee attack, you can use your reaction to expend an Exploit Die, make a single melee weapon attack against your attacker, and on hit, add one roll of your Exploit Die to the damage roll of that attack."
+};
+
+SpellsList["cunning instinct"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (checks)]",
+	prereqeval : function(v) { return What('Wis') >= 11},
+	// Regular spell attributes
+	name : "Cunning Instinct",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Skill",
+	time : "Check",
+	range : "Self",
+	duration : "Instantaneous",
+	description : "Add my Exploit Die to a Wisdom (Perception) or Wisdom (Survival) check",
+	descriptionFull : "When making a Wisdom (Perception) or Wisdom (Survival) check, you can expend one Exploit Die, roll it, and add the result to your ability check after rolling but before determining success or failure."
 };
 
 SpellsList["aggressive sprint"] = {
@@ -584,12 +640,17 @@ ClassList["fighter(laserllama)"] = {
 			}
 
 			// Make a filtered spell list that contains only Fighter(laserllama) "spells"
-			const FighterSpells = Object.keys(SpellsList).filter((key) => SpellsList[key].isExploit);
+			const FighterSpells = Object.keys(SpellsList).filter((key) => SpellsList[key].isExploit).filter((key) => {
+				for (var i = 0; i < SpellsList[key].classes.length; i++) {
+					if (SpellsList[key].classes[i] == "fighter(laserllama)") return true;
+				}
+				return false;
+				// NOTE: this is literally a SpellsList[key].classes.includes("fighter(laserllama)") but for some cursed reason I can't use that function
+			});
 			
-			var NewSpell;
 			// Iterate over all Fighter(laserllama) "spells"
 			for (var i = 0; i < FighterSpells.length; i++) {
-				NewSpell = SpellsList[FighterSpells[i]];
+				var NewSpell = SpellsList[FighterSpells[i]];
 
 				MartialExploits.extrachoices.push(NewSpell.name); // Add "spell" name to menu options
 
@@ -928,7 +989,7 @@ FeatsList["martial training"] = {
 SourceList["GMB:LL"] = {
 	name : "LaserLlama",
 	abbreviation : "GMB:LL",
-	abbreviationSpellsheet : "ll",
+	abbreviationSpellsheet : "LL",
 	group : "GM Binder",
 	url : "https://www.gmbinder.com/profile/laserllama",
 	date : "2018/04/22"
