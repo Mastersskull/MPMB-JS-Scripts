@@ -485,7 +485,7 @@ SpellsList["intimidating command"] = {
 	descriptionFull : "As a bonus action, you can expend an Exploit Die to shout a one-word command at one creature that can hear you within 30 feet. It must succeed on a Wisdom saving throw, or it is compelled to obey your command to the best of its ability on its next turn unless its actions would be directly harmful to it"
 };
 
-// Martial Exploits
+// 1st-Degree Martial Exploits
 
 SpellsList["arresting strike"] = {
 	// Exploit exclusive attributes
@@ -580,6 +580,99 @@ SpellsList["cunning instinct"] = {
 	description : "Add my Exploit Die to a Wisdom (Perception) or Wisdom (Survival) check",
 	descriptionFull : "When making a Wisdom (Perception) or Wisdom (Survival) check, you can expend one Exploit Die, roll it, and add the result to your ability check after rolling but before determining success or failure."
 };
+
+SpellsList["disarm"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (combat)]",
+	// Regular spell attributes
+	name : "Disarm",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Combat",
+	time : "Hit",
+	timeFull : "No action required, on hit with a weapon attack",
+	range : "Self",
+	components : "W", // W = weapon
+	compMaterial : "Weapon attack",
+	duration : "Instantaneous",
+	save : "Str",
+	description : "On hit, target makes Str saving throw or drops one item of your choice that is holding and takes an Exploit Die of bonus dmg",
+	descriptionFull : "When you hit a creature with a weapon attack, you can expend an Exploit Die and attempt to disarm it. It must succeed on a Strength saving throw, or it takes additional damage equal to one roll of your Exploit Die, and it drops one item of your choice that it is currently holding on the ground in the space that it is currently occupying."
+};
+
+SpellsList["feat of strength"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (checks)]",
+	prereqeval : function(v) { return What('Str') >= 11 || What('Con') >= 11},
+	// Regular spell attributes
+	name : "Feat of Strength",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Skill",
+	time : "Check",
+	range : "Self",
+	duration : "Instantaneous",
+	description : "Add any Exploit Die up to my Prof Bonus to a Str or Con ability check",
+	descriptionFull : "Whenever you make a Strength or Constitution ability check you can expend Exploit Dice (up to your proficiency bonus), roll those dice, and add the total to the result of your ability check. You can do so after you roll the d20, but before you know if you succeed or fail."
+};
+
+SpellsList["feint"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (combat)]",
+	// Regular spell attributes
+	name : "Feint",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Combat",
+	time : "1 bns",
+	range : "Self",
+	duration : "Instantaneous",
+	description : "One creature makes Wis save or I have adv on all my attacks until the end of my turn",
+	descriptionFull : "As a bonus action, you can expend one Exploit Die to feint, forcing a creature that can see you within 15 feet to make a Wisdom saving throw. On a failed save, you have advantage on your attacks against it until the end of your current turn."
+};
+
+SpellsList["first aid"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (combat)]",
+	// Regular spell attributes
+	name : "First Aid",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Combat",
+	time : "1 a",
+	timeFull : "An action",
+	range : "Touch",
+	duration : "Instantaneous",
+	description : "Touch a creature with at least 1 hp, expend any Exploit Die up to my Prof Bonus to heal total roll + its Con",
+	descriptionFull : "As an action, you can touch a creature that has at least 1 hit point and expend Exploit Dice (up to your proficiency bonus), roll those dice, and that creature regains a number of hit points equal to the total roll + its Constitution modifier."
+};
+
+SpellsList["heroic fortitude"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[1st-degree exploits (checks)]",
+	// Regular spell attributes
+	name : "Heroic Fortitude",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 1,
+	school : "Skill",
+	time : "Save",
+	range : "Self",
+	duration : "Instantaneous",
+	description : "Add one Exploit Die to a Str, Dex or Con saving throw",
+	descriptionFull : "Whenever you are forced to make a Strength, Dexterity, or Constitution saving throw you can expend an Exploit Die, roll it, and add the result to your saving throw. You can do so after you roll the d20, but before you know if you succeed or fail."
+};
+
+// 2nd-Degree Martial Exploits
 
 SpellsList["aggressive sprint"] = {
 	// Exploit exclusive attributes
