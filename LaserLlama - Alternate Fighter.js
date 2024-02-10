@@ -410,12 +410,58 @@ CurrentSpells["fighter(laserllama)"] = {
 	bonus : {}
 }
 
+// Exploits list
+
+/* HOW TO ADD AN EXPLOIT 
+	Exploits attributes are split into two parts:
+	1. Exploit exclusive attributes
+	2. Regular spell attributes
+	
+	Exploit exclusive attributes are detailed below:
+	isExploit // REQUIRED // 
+		TYPE: boolean
+		Has to be set to true for ALL Exploits
+		Setting it to false is the same as not putting it
+
+	submenu // OPTIONAL //
+		TYPE: string
+		Determines the submenu in which the Exploit will be added, if any
+		It is recommended to use a submenu related to the degree of the Exploit
+
+	prereqeval // OPTIONAL //
+		TYPE: function or, for backwards-compatibility, string that is evaluated using eval()
+		This should return 'true' if the prerequisite is met or 'false' otherwise
+		For more details: https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/blob/master/additional%20content%20syntax/feat%20(FeatsList).js#L146
+
+	Regular spell attributes are detailed below:
+	classes // REQUIRED //
+		TYPE: array (variable length)
+		This determines which classes can access this Exploit
+
+	school // OPTIONAL //
+		TYPE: string
+		This determines the school in which the spell belongs
+		For Exploits, there are currently the following schools: Combat, Skill & Order
+
+		You can also define a new spell school abbreviation by adding it to the "spellSchoolList" object, like so:
+			spellSchoolList["NewSc"] = "new school";
+		Be aware that the object name can use capitalization but the entered sting can't.
+
+	components // OPTIONAL //
+		TYPE: string
+		This determines the required components for the spell
+		For Exploits, there might be components such as a ranged weapon, a melee weapon, a free hand, etc.
+
+	All other spell attributes can be found at:
+	https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/blob/master/additional%20content%20syntax/spell%20(SpellsList).js
+
+*/
+
 // New spell schools
 spellSchoolList["Combat"] = "combat";
 spellSchoolList["Skill"] = "skill";
 spellSchoolList["Order"] = "order";
 
-// Exploits
 // Warlord Exploits (for testing Master at Arms)
 SpellsList["intimidating command"] = {
 	// Exploit exclusive attributes
@@ -925,15 +971,15 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 						if (n < 7) return '';
 
 						if (n >= 7 && n < 15) {
-							var result = ["I learn two additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+							var result = ["I learn two additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level"]
 						}
 
 						if (n >= 15 && n < 18) {
-							var result = ["I learn three additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+							var result = ["I learn three additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level"]
 						}
 
 						if (n >= 18) {
-							var result = ["I learn four additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level."]
+							var result = ["I learn four additional Exploits of my choice from any class", "If it has a level prerequisite, I use my Fighter level"]
 						}
 
 						return desc(result)
