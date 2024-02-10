@@ -450,7 +450,7 @@ CurrentSpells["fighter(laserllama)"] = {
 
 		You can also define a new spell school abbreviation by adding it to the "spellSchoolList" object, like so:
 			spellSchoolList["NewSc"] = "new school";
-		Be aware that the object name can use capitalization but the entered sting can't.
+		Be aware that the object name can use capitalization but the entered string can't.
 
 	components // OPTIONAL //
 		TYPE: string
@@ -482,7 +482,7 @@ SpellsList["intimidating command"] = {
 	time : "1 bns",
 	range : "30 ft",
 	components : "V",
-	duration : "Instantaneous",
+	duration : "1 rnd",
 	save : "Wis",
 	description : "1 crea save or follow one word command (cannot be directly harmful), e.g. approach, drop, flee, halt",
 	descriptionFull : "As a bonus action, you can expend an Exploit Die to shout a one-word command at one creature that can hear you within 30 feet. It must succeed on a Wisdom saving throw, or it is compelled to obey your command to the best of its ability on its next turn unless its actions would be directly harmful to it"
