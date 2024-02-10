@@ -431,12 +431,17 @@ CurrentSpells["fighter(laserllama)"] = {
 	prereqeval // OPTIONAL //
 		TYPE: function or, for backwards-compatibility, string that is evaluated using eval()
 		This should return 'true' if the prerequisite is met or 'false' otherwise
+		NOTE: Do not add the class level preqrequisite, as it is calculated using the spell level attribute
 		For more details: https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/blob/master/additional%20content%20syntax/feat%20(FeatsList).js#L146
 
 	Regular spell attributes are detailed below:
 	classes // REQUIRED //
 		TYPE: array (variable length)
 		This determines which classes can access this Exploit
+
+	level // REQUIRED //
+		TYPE: number (0-5)
+		This is the exploit's degree
 
 	school // OPTIONAL //
 		TYPE: string
