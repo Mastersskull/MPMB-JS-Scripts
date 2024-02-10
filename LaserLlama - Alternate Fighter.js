@@ -428,6 +428,7 @@ SpellsList["arresting strike"] = {
 	time : "Hit",
 	range : "Self",
 	components : "W", // W = weapon
+	compMaterial : "Melee weapon attack",
 	duration : "Instantaneous",
 	save : "Dex",
 	description : "On hit, target makes Dex saving throw or speed reduced to 0 and takes an Exploit Die of bonus dmg",
@@ -456,7 +457,7 @@ SpellsList["aggressive sprint"] = {
 	// Exploit exclusive attributes
 	isExploit : true,
 	submenu : "[2nd-degree exploits]",
-	prereqeval : function(v) { return classes.known["fighter(laserllama)"].level >= 5 /*return What('Str') >= 11;*/},
+	prereqeval : function(v) { return classes.known["fighter(laserllama)"].level >= 5 },
 	// Regular spell attributes
 	name : "Aggressive sprint",
 	classes : ["fighter(laserllama)"],
@@ -465,7 +466,6 @@ SpellsList["aggressive sprint"] = {
 	school : "Combat",
 	time : "1 bns",
 	range : "Self",
-	//components : "V,S,M",
 	duration : "Instantaneous",
 	description : "Move up to my walk speed toward a hostile creature; Single melee weapon attack against it",
 	descriptionFull : "As a bonus action, you can expend one Exploit Die to move up to your walking speed toward a hostile creature that you can see and make a single melee weapon attack against it."
