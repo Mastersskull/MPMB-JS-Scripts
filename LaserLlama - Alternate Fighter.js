@@ -23,6 +23,69 @@
 var iFileName = "LaserLlama - Fighter.js";
 RequiredSheetVersion("13.0.6");
 
+// Utility function
+function GetSubclassExploits(subclass_name, exploit_list) {
+	/* pre: subclass_name is a string
+			exploit_list is an array of length 5
+			1st and 2nd elements are the 1st degree exploits
+			3rd and 4th elements are the 2nd degree exploits
+			5th element is the 3rd degree exploit
+
+		post: returns the subclassfeature that contains all the subclass exploits
+
+		note: All exploits have to first be defined through SpellsList, otherwise it *will* crash
+	*/		
+	SubclassExploits = {
+		name : subclass_name +  " Exploits",
+		source : [["GMB:LL", 0]],
+		minlevel : 3,
+		description : desc(["I learn additional Exploits who don't count against my total and can't be switched"]),
+		toNotesPage : [{
+				name : subclass_name +  " Exploits",
+				note : desc(["Below are my " + subclass_name + " exploits"])
+			}],
+		autoSelectExtrachoices : [{
+			extrachoice : exploit_list[0],
+			minlevel : 3
+		}, {
+			extrachoice : exploit_list[1],
+			minlevel : 3
+		}, {
+			extrachoice : exploit_list[2],
+			minlevel : 5
+		}, {
+			extrachoice : exploit_list[3],
+			minlevel : 5
+		}, {
+			extrachoice : exploit_list[4],
+			minlevel : 9
+		}]
+	};
+
+	for (var i = 0; i < SubclassExploits.autoSelectExtrachoices.length; i++) {
+		var NewSpell = SubclassExploits.autoSelectExtrachoices[i].extrachoice;
+
+		SubclassExploits[NewSpell] = {
+			name: SpellsList[NewSpell].name,
+			toNotesPage : [{ // What is added to the notes page
+				name : SpellsList[NewSpell].name + " Exploit",
+				note : desc(SpellsList[NewSpell].descriptionFull),
+				amendTo : SubclassExploits.name
+			}],
+			source: SpellsList[NewSpell].source,
+			spellcastingBonus : [{ // What is added to the spellcasting sheet
+				name : SpellsList[NewSpell].name + " Exploit",
+				spellcastingAbility : 1,
+				spells : [NewSpell],
+				selection : [NewSpell]
+			}],
+			addMod: SpellsList[NewSpell].addMod,
+			submenu: SpellsList[NewSpell].submenu
+		};
+	}
+
+	return SubclassExploits;
+}
 
 // Fighting styles
 var FightingStyles = {
@@ -404,7 +467,9 @@ CurrentSpells["fighter(laserllama)"] = {
 	name : "Fighter",
 	shortname : "Martial Exploits",
 	ability: 1,
-	bonus : {}
+	bonus : {},
+	typeSp:"known",
+	refType:"class"
 }
 
 // Exploits list
@@ -491,7 +556,7 @@ SpellsList["intimidating command"] = {
 };
 
 // Martial Exploits
-
+// 1st degree exploits
 SpellsList["arresting strike"] = {
 	// Exploit exclusive attributes
 	isExploit : true,
@@ -587,6 +652,7 @@ SpellsList["cunning instinct"] = {
 	descriptionFull : "When making a Wisdom (Perception) or Wisdom (Survival) check, you can expend one Exploit Die, roll it, and add the result to your ability check after rolling but before determining success or failure."
 };
 
+// 2nd degree exploits
 SpellsList["aggressive sprint"] = {
 	// Exploit exclusive attributes
 	isExploit : true,
@@ -602,6 +668,43 @@ SpellsList["aggressive sprint"] = {
 	duration : "Instantaneous",
 	description : "Move up to my walk speed toward a hostile creature; Single melee weapon attack against it",
 	descriptionFull : "As a bonus action, you can expend one Exploit Die to move up to your walking speed toward a hostile creature that you can see and make a single melee weapon attack against it."
+};
+
+SpellsList["honor duel"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[2nd-degree exploits]",
+	// Regular spell attributes
+	name : "Honor Duel",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 2,
+	school : "Combat",
+	time : "1 bns",
+	range : "30 ft",
+	components : "V",
+	duration : "1 min",
+	save : "Wis",
+	description : "1 crea save or dis. on attacks vs. not-me; Extra save each turn; Ends if I attack someone else",
+	descriptionFull : "As a bonus action, you can expend an Exploit Die and shout a challenge at a foe. One creature of your choice within 30 feet that can see or hear you must make a Wisdom saving throw. On a failed save, the creature has disadvantage on all attack rolls it makes against targets other than you for 1 minute. The creature can repeat this saving throw at the end of each of its turns, ending the effect on a success. This effect ends early if you attack a creature other than the target."
+};
+
+// 3rd degree exploits
+SpellsList["heroic focus"] = {
+	// Exploit exclusive attributes
+	isExploit : true,
+	submenu : "[3rd-degree exploits]",
+	// Regular spell attributes
+	name : "Heroic Focus",
+	classes : ["fighter(laserllama)"],
+	source : ["GMB:LL", 0],
+	level : 3,
+	school : "Combat",
+	time : "1 bns",
+	range : "Self",
+	duration : "Conc, 1 min",
+	description : "+2 AC, speed doubled, adv. on Dex saves, extra action (1 attack, dash, disengage, hide, search, object)",
+	descriptionFull : "As a bonus action, expend one Exploit Die to enter a heightened state of focus (requires concentration like a spell) for 1 minute or until concentration is lost, gaining doubled speed, +2 Armor Class, advantage on Dexterity saves, and an additional action (usable for specified actions); end with a Constitution saving throw against Exploit save DC or be incapacitated until the end of the next turn; does not stack with haste spell."
 };
 
 // Main class
@@ -907,7 +1010,7 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 					return desc(result)
 				}),
 			toNotesPage : [{
-					name : "Additional Exploits",
+					name : "Master at Arms Exploits",
 					note : desc(["Below are my Master at Arms exploits"])
 				}],
 
@@ -1017,7 +1120,7 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 					toNotesPage : [{ // What is added to the notes page
 						name : NewSpell.name + " Exploit",
 						note : desc(NewSpell.descriptionFull),
-						amendTo : "Additional Exploits"
+						amendTo : "Master at Arms Exploits"
 					}],
 					source: NewSpell.source,
 					spellcastingBonus : [{ // What is added to the spellcasting sheet
@@ -1026,6 +1129,7 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 						spells : [FighterSpells[i]],
 						selection : [FighterSpells[i]]
 					}],
+					addMod: NewSpell.addMod,
 					submenu: NewSpell.submenu
 				}
 
@@ -1073,6 +1177,18 @@ AddSubClass("fighter(laserllama)", "master at arms", {
 			minlevel : 18,
 			description : desc(["Once per turn, instead of expending an Exploit Die, I can use a d6 as Exploit Die", "Also, I can replace an Exploit I know with another of the same level with 1h of training (can be part of a short/long rest)"])
 		}
+	}
+})
+
+AddSubClass("fighter(laserllama)", "ronin", {
+	regExpSearch : /ronin/i,
+	subname : "Ronin",
+	fullname : "Ronin",
+	source : [["GMB:LL", 0]],
+	abilitySave : 1,
+	abilitySaveAlt : 2,
+	features : {
+		"subclassfeature3" : GetSubclassExploits("Ronin", ["commanding presence","counter","aggressive sprint","honor duel","heroic focus"])
 	}
 })
 
