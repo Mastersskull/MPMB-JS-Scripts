@@ -431,6 +431,11 @@ CurrentSpells["fighter(laserllama)"] = {
 		NOTE: Do not add the class level preqrequisite, as it is calculated using the spell level attribute
 		For more details: https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/blob/master/additional%20content%20syntax/feat%20(FeatsList).js#L146
 
+	addMod // OPTIONAL //
+		TYPE: array of objects (variable length)
+		This should only be used if the exploit gives a passive bonus (eg, replacing a skill check with another ability)
+		For more details: https://github.com/morepurplemorebetter/MPMBs-Character-Record-Sheet/blob/master/additional%20content%20syntax/_common%20attributes.js#L2108 
+
 	Regular spell attributes are detailed below:
 	classes // REQUIRED //
 		TYPE: array (variable length)
@@ -531,6 +536,7 @@ SpellsList["commanding presence"] = {
 	isExploit : true,
 	submenu : "[1st-degree exploits (checks)]",
 	prereqeval : function(v) { return What('Str') >= 11 || What('Cha') >= 11},
+	addMod : { type : "skill", field : "Intimidation", mod : "max(Str-Cha|0)", text : "I can replace Intimidation (Charisma) checks with Intimidation (Strength)" },
 	// Regular spell attributes
 	name : "Commanding Presence",
 	classes : ["fighter(laserllama)", "barbarian(laserllama)"],
@@ -740,6 +746,7 @@ ClassList["fighter(laserllama)"] = {
 						spells : [FighterSpells[i]],
 						selection : [FighterSpells[i]]
 					}],
+					addMod: NewSpell.addMod,
 					submenu: NewSpell.submenu
 				}
 
