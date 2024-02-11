@@ -742,7 +742,7 @@ ClassList["fighter(laserllama)"] = {
 	attacks : [1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4],
 	abilitySave : 1, // Alt Fighter uses Strength or Dex for foes' saving throws
 	abilitySaveAlt : 2,
-	spellcastingFactor : 1,
+	spellcastingFactor : "warlock99", // Required for the "create a complete spell sheet" option; using the warlock option ensures it doesn't clash with multiclassing
 	features: {
 
 		"fighting style" : {
