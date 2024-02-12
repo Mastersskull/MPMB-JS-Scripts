@@ -556,7 +556,7 @@ SpellsList["intimidating command"] = {
 };
 
 // Martial Exploits
-
+// 1st degree martial exploits
 SpellsList["arresting strike"] = {
 	// Exploit exclusive attributes
 	isExploit : true,
@@ -669,7 +669,7 @@ SpellsList["disarm"] = {
 	compMaterial : "Weapon attack",
 	duration : "Instantaneous",
 	save : "Str",
-	description : "On hit, target makes Str saving throw or drops one item of your choice that is holding and takes an Exploit Die of bonus dmg",
+	description : "On hit, target makes Str saving throw or drops one item and takes an Exploit Die of bonus dmg",
 	descriptionFull : "When you hit a creature with a weapon attack, you can expend an Exploit Die and attempt to disarm it. It must succeed on a Strength saving throw, or it takes additional damage equal to one roll of your Exploit Die, and it drops one item of your choice that it is currently holding on the ground in the space that it is currently occupying."
 };
 
@@ -722,7 +722,7 @@ SpellsList["first aid"] = {
 	timeFull : "An action",
 	range : "Touch",
 	duration : "Instantaneous",
-	description : "Touch a creature with at least 1 hp, expend any Exploit Die up to my Prof Bonus to heal total roll + its Con",
+	description : "Touch a creature with at least 1 hp, expend any Exploit Die up to Prof Bonus to heal total roll + its Con",
 	descriptionFull : "As an action, you can touch a creature that has at least 1 hit point and expend Exploit Dice (up to your proficiency bonus), roll those dice, and that creature regains a number of hit points equal to the total roll + its Constitution modifier."
 };
 
@@ -744,8 +744,6 @@ SpellsList["heroic fortitude"] = {
 };
 
 // 2nd-Degree Martial Exploits
-
-// 2nd degree exploits
 SpellsList["aggressive sprint"] = {
 	// Exploit exclusive attributes
 	isExploit : true,
