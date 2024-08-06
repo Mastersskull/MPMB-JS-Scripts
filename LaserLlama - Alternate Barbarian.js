@@ -284,7 +284,7 @@ ClassList["barbarian(laserllama)"] = {
 				name : "Savage Rebuke",
 				description : desc(["When a creature I can see hits me with a melee attack I can expend an Exploit Die to make 1 melee weapon attack back at them.",
 									"On a hit, I add the Exploit Die to the damage."]),
-				submenu : "[1nd-degree exploits]",
+				submenu : "[1st-degree exploits]",
 				source : ["GMB:LL", 0],
 				action : ["reaction", ""],
 			},
@@ -382,7 +382,7 @@ ClassList["barbarian(laserllama)"] = {
 				name : "Menacing Shout",
 				description : desc(["As a bonus action I can expend an Exploit Die to force a creature within 30 feet that can see or hear me to make a wisdom save.",
 									"On a fail, the creature is frightened of me until the end of my next turn and must use its action to move as far from me as possible without harming itself."]),
-				submenu : "[2st-degree exploits]",									
+				submenu : "[2nd-degree exploits (level 5+)]",									
 				action : ["bonus action", ""],
 				source : [["GMB:LL", 0]],
 				prereqeval : function(v) { return What('Con') >= 13 || What('Cha' >= 13);}
