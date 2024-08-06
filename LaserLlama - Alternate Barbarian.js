@@ -41,23 +41,28 @@ ClassList["barbarian(laserllama)"] = {
 			description : levels.map(function(n) {
 				if (n < 2) {
 					var descr = ["For 1 minute:",
-								 "Add 1d4 to melee/thrown weapons that use Str.",
+								 "Add 1d4 to melee/thrown weapon attacks that use Str.",
 								 "Adv. on Con/Str checks/saves ; resistance to bludgeoning/piercing/slashing.",
-								 "Stops if I end turn without attacking, taking damage, making a Str check, dashing as close as possible towards an enemy or go unconscious."];
+								 "I cannot cast or concentrate on spells",
+								 "Stops if I end turn without attacking, taking damage, making a Str check, dashing as close as possible towards an enemy or go unconscious."
+								 ];
 				} else if (n > 1 && n < 11 ){
 					var descr = ["For 1 minute:",
-								 "Add exploit die to melee/thrown weapons that use Str.",
+								 "Add exploit die to melee/thrown weapon attacks that use Str.",
 								 "Adv. on Con/Str checks/saves ; resistance to bludgeoning/piercing/slashing.",
+								 "I cannot cast or concentrate on spells",
 								 "Stops if I end turn without attacking, taking damage, making a Str check, dashing as close as possible towards an enemy or go unconscious."];
 				} else if (n > 10 && n < 15 ){
 					var descr = ["For 1 minute:",
-								 "Add exploit die to melee/thrown weapons that use Str.",
+								 "Add exploit die to melee/thrown weapon attacks that use Str.",
 								 "Adv. on Con/Str checks/saves ; resistance to bludgeoning/piercing/slashing.",
+								 "I cannot cast or concentrate on spells",
 								 "Stops if I go unconscious."];
 				} else {
 					var descr = ["For 1 hour:",
-								 "Add exploit die to melee/thrown weapons that use Str.",
+								 "Add exploit die to melee/thrown weapon attacks that use Str.",
 								 "Adv. on Con/Str checks/saves ; resistance to bludgeoning/piercing/slashing.",
+								 "I cannot cast or concentrate on spells",
 								 "Stops if I go unconscious."];
 				}
 				return desc(descr);
@@ -72,7 +77,7 @@ ClassList["barbarian(laserllama)"] = {
 			name : "Unarmored Defense",
 			source : [["SRD", 8], ["P", 48]],
 			minlevel : 1,
-			description : desc(["Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield"]),
+			description : desc(["Without armor, my AC is 10 + Dexterity modifier + Constitution modifier + shield (if any)"]),
 			armorOptions : [{
 				regExpSearch : /justToAddToDropDown/,
 				name : "Unarmored Defense",
