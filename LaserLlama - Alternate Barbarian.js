@@ -105,7 +105,7 @@ ClassList["barbarian(laserllama)"] = {
 			//1st-degree exploits
 			"Bonebreaker Critical (Strength 11)",
 			"Brace Up (Constitution 11)",
-			"Commanding Presence (Charisma 11 or Strenght 11)", 
+			"Commanding Presence (Strength 11 or Charisma 11)", 
 			"Crushing Grip (Strength 11)",
 			"Cunning Instinct (Wisdom 11)",
 			"Destructive Strike (Strength 11)",
@@ -125,18 +125,16 @@ ClassList["barbarian(laserllama)"] = {
 			"Arresting Critical (Strength 13)",
 			"Bloodthirsty Critical (Strength 13)",
 			"Concussive Blow (Strength 13)",
-			"Crippling Critical (Strength 13)",
 			"Greater Hurl (Strength 13)",
 			"Honor Duel",
 			"Immovable Stance (Strength 13 or Constitution 13)",
-			"Menacing Shout (Consitution 13 or Charisma 13)",
+			"Menacing Shout (Constitution 13 or Charisma 13)",
 			"Shattering Slam (Strength 13)",
 			"Thunderous Blow (Strength 13)",
 
 			//3rd-degree exploits (level 9+)
 			"Confounding Critical (Strength 15)",
 			"Destructive Slam (Strength 15)",
-			"Resilient Body (Constitution 15)",
 			"Primal Terror",
 			"Mythic Resilience (Constitution 15)",
 			"Roar of Triumph",
@@ -146,12 +144,12 @@ ClassList["barbarian(laserllama)"] = {
 			//4th-degree exploits (level 13+)
 			"Devastating Critical (Strength 17)",
 			"Staggering Blow (Strength 17)",
-			"Strenght of the Colossus (Strength 17)",
+			"Strength of the Colossus (Strength 17)",
 			"Unbreakable (Constitution 17)",
 
 			//5th-degree exploits (level 17+)
 			"Cataclysmic Slam (Strength 19)",
-			"Vorpal Critical (Strength 19 or Dexterity 19)"
+			"Vorpal Critical (Strength 19)"
 			],
 			extraTimes : levels.map(function (n) {
 					return n < 2 ? 0 : n < 5 ? 2 : n < 7 ? 3 : n < 9 ? 4 : n < 11 ? 5 : n < 13 ? 6 : n < 17 ? 7 : 8;
@@ -407,7 +405,7 @@ ClassList["barbarian(laserllama)"] = {
 			},
 
 			//3rd-degree exploits (level 9+)
-			"confounding critical (strenght 15)" : {
+			"confounding critical (strength 15)" : {
 				name : "Confounding Critical",
 				description : desc(["When I crit with a weapon attack I can expend an Exploit Die to strike the head, muddling the target.",
 									"For 1 minute it must roll a d6 and subtract the result from any attack roll, ability or concentration check.",
@@ -437,7 +435,7 @@ ClassList["barbarian(laserllama)"] = {
 				action : ["action",""],
 			},
 
-			"mythic resilience (constitution of 15)" : {
+			"mythic resilience (constitution 15)" : {
 				name: "Mythic Resilience",
 				description : desc(["When I take damage and can see the source I can expend Exploit dice up to my prof. bonus to reduce the damage taken.",
 									"For the reduction I roll Exploit Dice equal to three times the dice spent.",
