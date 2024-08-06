@@ -247,7 +247,7 @@ ClassList["barbarian(laserllama)"] = {
 
 			"mighty leap (strength 11)" : {
 				name : "Mighty Leap",
-				description : desc(["When I make a running/standing jump, I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
+				description : desc(["If I move at least 10 feet before I jump I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
 									"This jump can exceed my remaining speed."]),
 				submenu : "[1st-degree exploits]",
 				source : [["GMB:LL", 0]],
@@ -918,7 +918,7 @@ AddSubClass("barbarian(laserllama)", "champion", {
 			name : "Savage Exploit: Mighty Leap",
 			toNotesPage : [{
 				name : "Mighty Leap",
-				note : ["When I make a running/standing jump, I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
+				note : ["If I move at least 10 feet before I jump I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent..",
 						"This jump can exceed my remaining speed."],			
 				page3notes : true,				
 				source : [["GMB:LL", 0]]
@@ -1094,8 +1094,8 @@ AddSubClass("barbarian(laserllama)", "totem warrior", {
 			name : "Savage Exploit: Mighty Leap",
 			toNotesPage : [{
 				name : "Mighty Leap",
-				note : ["When I make a running/standing jump, I can expend an Exploit Die and additionally jump [5 x roll] feet (minimum of 5)",
-				"This jump can exceed my remaining speed."],			
+				note : ["If I move at least 10 feet before I jump I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
+						"This jump can exceed my remaining speed."],			
 				page3notes : true,				
 				source : [["GMB:LL", 0]]
 			}],
@@ -1280,7 +1280,7 @@ AddSubClass("barbarian(laserllama)", "Blood & Iron", {
 			name : "Savage Exploit: Mighty Leap",
 			toNotesPage : [{
 				name : "Mighty Leap",
-				note : ["When I make a running/standing jump, I can expend an Exploit Die and additionally jump [5 x roll] feet (minimum of 5)",
+				note : ["If I move at least 10 feet before I jump I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
 						"This jump can exceed my remaining speed."],			
 				page3notes : true,				
 				source : [["GMB:LL", 0]]
@@ -1572,7 +1572,7 @@ AddSubClass("barbarian(laserllama)", "lycan", {
 			name : "Savage Exploit: Mighty Leap",
 			toNotesPage : [{
 				name : "Mighty Leap",
-				note : ["When I make a running/standing jump, I can expend an Exploit Die and additionally jump [5 x roll] feet (minimum of 5)",
+				note : ["If I move at least 10 feet before I jump I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
 						"This jump can exceed my remaining speed."],			
 				page3notes : true,				
 				source : [["GMB:LL", 0]]
@@ -1948,7 +1948,7 @@ AddSubClass("barbarian(laserllama)", "wild magic", {
 			name : "Savage Exploit: Mighty Leap",
 			toNotesPage : [{
 				name : "Mighty Leap",
-				note : ["When I make a running/standing jump, I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
+				note : ["If I move at least 10 feet before I jump I can expend Exploit Dice up to my prof. bonus and additionally jump 10 feet per dice spent.",
 						"This jump can exceed my remaining speed."],			
 				page3notes : true,				
 				source : [["GMB:LL", 0]]
