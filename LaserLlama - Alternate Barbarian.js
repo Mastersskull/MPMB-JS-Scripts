@@ -795,7 +795,7 @@ AddSubClass("barbarian(laserllama)", "brute", {
 				atkAdd : [
 					function (fields, v) {
 						if (v.baseWeaponName == "unarmed strike") {
-							var aBruteDie = function (n) {return  (n < 5 ? 4 : n < 11 ? 6 : n <17 ? 8 : 10);}(classes.known["barbarian(laserllama)"].level)
+							var aBruteDie = function (n) {return  (n < 5 ? 4 : n < 11 ? 6 : n < 17 ? 8 : 10);}(classes.known["barbarian(laserllama)"].level)
 							try {
 								var curDie = eval_ish(fields.Damage_Die.replace('d', '*'));
 							} catch (e) {
