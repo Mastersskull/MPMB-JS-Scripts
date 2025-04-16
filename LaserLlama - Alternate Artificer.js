@@ -1,12 +1,12 @@
 var iFileName = "LaserLlama - Artificer.js";
 RequiredSheetVersion("13.1.7");
 
-// I haven't included the LL unique spells such as Tempestuos Blade
+// For this sheet you need the Laserllama Compendium of Spells file. Found at: https://github.com/Mastersskull/MPMB-JS-Scripts/blob/main/LaserLlama%20-%20Compendium%20of%20Spells.js
 var artificerSpells = [
-	/*Cantrip*/ "acid splash", "booming blade", "create bonfire", "fire bolt", "frostbite", "green-flame blade", "light", "lightning lure", "mage hand", "poison spray", "prestidigitation", "ray of frost", "shocking grasp", "thorn whip", "thunderclap",
-	/*1st level*/ "absorb elements", "alarm", "catapult", "caustic brew", "color spray", "cure wounds", "disguise self", "expeditious retreat", "faerie fire", "false life", "feather fall", "fog cloud" , "grease", "heroism", "identify", "jump", "magic missile", "sleep", "witch bolt",
-	/*2nd level*/ "aid", "blur", "continual flame", "cordon of arrows", "darkvision", "earthbind", "enhance ability", "enlarge/reduce", "heat metal", "invisibility", "levitate", "knock", "arcane lock", "magic mouth", "magic weapon", "pyrotechnics", "rope trick", "see invisibility", "skywrite", "spider climb", "web",
-	/*3rd level*/ "blink", "catnap", "create food and water", "daylight", "dispel magic", "elemental weapon", "flame arrows", "fly", "glyph of warding", "haste", "intellect fortress", "life transference", "lightning arrow", "protection from energy", "revivify", "sending", "slow", "tiny servant", "water breathing",
+	/*Cantrip*/ "acid splash ll", "booming blade ll", "create bonfire", "fire bolt", "frostbite", "green-flame blade ll", "light", "lightning lure ll", "mage hand", "poison spray ll", "prestidigitation", "ray of frost", "shocking grasp", "tempestuous blade ll", "thorn whip", "thunderclap",
+	/*1st level*/ "absorb elements", "alarm", "catapult", "caustic brew", "color spray", "cure wounds", "disguise self", "ensnaring strike ll", "expeditious retreat", "faerie fire", "false life", "feather fall", "fog cloud" , "grease", "heroism", "identify", "jump ll", "magic missile", "sleep", "witch bolt ll",
+	/*2nd level*/ "aid", "blur", "continual flame", "cordon of arrows ll", "darkvision", "earthbind", "enhance ability", "enlarge/reduce", "heat metal", "invisibility", "levitate", "lock/unlock ll", "magic mouth", "magic weapon ll", "pyrotechnics", "restoration ll", "rope trick", "see invisibility", "skywrite", "spider climb", "web",
+	/*3rd level*/ "blink", "catnap", "create food and water", "daylight", "dispel magic", "elemental weapon", "flame arrows ll", "fly", "glyph of warding", "haste", "intellect fortress", "life transference", "lightning arrow ll", "protection from energy", "revivify", "sending", "slow", "tiny servant", "water breathing",
 	/*4th level*/ "arcane eye", "dimension door", "elemental bane", "fabricate", "faithful hound", "freedom of movement", "greater invisibility", "resilient sphere", "secret chest", "stone shape", "summon construct",
 	/*5th level*/ "animate objects", "arcane hand", "awaken", "creation", "far step", "passwall", "skill empowerment", "transmute rock", "wall of light", "wall of stone"
  ];
@@ -49,7 +49,7 @@ ClassList["artificer(laserllama)"] = {
 		return defaultSpellTable[Math.ceil(n / 2)];
 	})),
 	spellcastingKnown : {
-		cantrips : [0, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+		cantrips : [0, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
 		spells : [0, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11]
 	},
 	spellcastingList : {
